@@ -1,0 +1,35 @@
+﻿@using Album.PL.Web.Models
+@using Album.Entities
+@{
+    var WebPL = new WebAlbumPL();
+
+    var login = Request["Login"];
+    var password = Request["Password"];
+
+    var user = new User();
+    user.Login = login;
+    user.Password = password;
+
+    switch (WebPL.AddUser(user))
+    {
+        case UserCheckStatus.ALLREADY_EXIST:
+            var existedUser = WebPL.GetUserByLogin(login);
+            if (existedUser.Password == null)
+            {
+                WebPL.SetUserPassword(existedUser.Id, password);
+                Response.Write("Пароль пользователя задан. Войдите под своим паролем");
+            }
+            else
+            {
+                Response.Write("Пользователь с таким логином уже существует");
+            }
+            return;
+        case UserCheckStatus.CORRECT:
+            WebPL.SetUserPassword(user.Id, password);
+            Response.Write("Успешно зарегистрирован. Войдите под своим паролем.");
+            return;
+        default:
+            Response.Write("Некорректный логин пользователя. Логин должен быть длинной 2-20 символов и состоять из символов английского алфавита, цифр, знаков '_' и '-'.");
+            return;
+    }
+}

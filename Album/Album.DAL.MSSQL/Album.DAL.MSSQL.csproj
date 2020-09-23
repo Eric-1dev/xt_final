@@ -49,6 +49,10 @@
       <Project>{DD36AC14-E5A0-4685-83D4-B923891958C9}</Project>
       <Name>Album.DAL.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Album.Entities\Album.Entities.csproj">
+      <Project>{5C200F4B-2B06-4A7E-9A90-F258DD3E51F4}</Project>
+      <Name>Album.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

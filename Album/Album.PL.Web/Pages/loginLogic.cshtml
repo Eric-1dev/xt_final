@@ -1,0 +1,16 @@
+﻿@using Album.PL.Web.Models
+@{
+    var WebPL = new WebAlbumPL();
+
+    var login = Request["Login"];
+    var password = Request["Password"];
+
+    if (WebPL.IsAccountExist(login, password))
+    {
+        FormsAuthentication.SetAuthCookie(login, createPersistentCookie: true);
+    }
+    else
+    {
+        Response.Write("Некорректное имя пользователя или пароль.");
+    }
+}
