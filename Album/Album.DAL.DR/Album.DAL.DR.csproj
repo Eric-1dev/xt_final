@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70ED9F5D-4C8F-4D82-9BD6-2670EEDDC099}</ProjectGuid>
+    <ProjectGuid>{57B7ADEF-4E41-49E6-A436-FF7E63CD1444}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Album.DAL.MSSQL</RootNamespace>
-    <AssemblyName>Album.DAL.MSSQL</AssemblyName>
+    <RootNamespace>Album.DAL.DR</RootNamespace>
+    <AssemblyName>Album.DAL.DR</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,13 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SQLAlbumDAL.cs" />
+    <Compile Include="AlbumDALDR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Album.DAL.Interfaces\Album.DAL.Interfaces.csproj">
       <Project>{DD36AC14-E5A0-4685-83D4-B923891958C9}</Project>
       <Name>Album.DAL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Album.DAL.MSSQL\Album.DAL.MSSQL.csproj">
+      <Project>{70ED9F5D-4C8F-4D82-9BD6-2670EEDDC099}</Project>
+      <Name>Album.DAL.MSSQL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
