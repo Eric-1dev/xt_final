@@ -1,3 +1,36 @@
-﻿@{
+﻿@using Album.PL.Web.Models
+@{
+    var WebPL = new WebAlbumPL();
 
+    var user = WebPL.GetUserByLogin(User.Identity.Name);
 }
+
+<div id="user_info_wrapper" class="text-center m-2 border">
+    @if (user != null)
+    {
+        var name = user.Name != "" ? user.Name : "[Имя не заполнено]";
+        var avatar = user.Avatar != null ? user.Avatar : "/Images/no_avatar.png";
+
+        <text>
+            <div class="text-muted"><h6>Информация о Вас:</h6></div>
+            <div id="my_avatar_wrapper">
+                <img src="@avatar" alt="Аватар">
+            </div>
+
+            <div class="form-group">
+                <div class="text-info">Логин</div>
+                <div class="">@user.Login<button class="btn btn-light btn-sm" id="logoutButton">Выход</button></div>
+            </div>
+
+            <div class="form-group">
+                <div class="text-info">Ваше имя:</div>
+                <div class="">@name</div>
+                <button class="btn btn-light btn-sm">Редактировать информацию</button>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary">Мой фотоальбом</button>
+            </div>
+        </text>
+    }
+</div>

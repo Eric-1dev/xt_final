@@ -19,6 +19,7 @@ namespace Album.Entities
     {
         NULL,
         CORRECT,
+        INCORRECT_LOGIN,
         INCORRECT_NAME,
         ALLREADY_EXIST
     }

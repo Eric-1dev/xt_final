@@ -27,6 +27,9 @@ namespace Album.BLL
             return checkResult;
         }
 
+        public bool AddUserToAdmins(Guid userId) => DAL.AddUserToAdmins(userId);
+
+        public IEnumerable<User> GetAllUsers() => DAL.GetAllUsers();
         public string[] GetRolesForUser(string login) => DAL.GetRolesForUser(login);
 
         public bool IsUserInRole(string login, string roleName) => DAL.IsUserInRole(login, roleName);
@@ -41,9 +44,16 @@ namespace Album.BLL
 
         public UserCheckStatus UserCorrectionCheck(User user)
         {
-            string nameCheck = @"^[a-zA-Z0-9_\-]{3,20}$";
-            if (!Regex.IsMatch(user.Login, nameCheck))
-                return UserCheckStatus.INCORRECT_NAME;
+            string loginCheck = @"^[a-zA-Z0-9_\-]{3,20}$";
+            string NameCheck = @"[a-zA-Zа-яА-ЯёЁ0-9_\-\s]{3,50}";
+            if (!Regex.IsMatch(user.Login, loginCheck))
+                return UserCheckStatus.INCORRECT_LOGIN;
+
+            if (user.Name != null)
+            {
+                if (!Regex.IsMatch(user.Name, NameCheck))
+                    return UserCheckStatus.INCORRECT_NAME;
+            }
 
             if (DAL.GetUserByLogin(user.Login) != null)
                 return UserCheckStatus.ALLREADY_EXIST;

@@ -10,6 +10,9 @@
     user.Login = login;
     user.Password = password;
 
+    bool isAdmin;
+    bool.TryParse(Request["IsAdmin"], out isAdmin);
+
     switch (WebPL.AddUser(user))
     {
         case UserCheckStatus.ALLREADY_EXIST:
@@ -25,6 +28,7 @@
             }
             return;
         case UserCheckStatus.CORRECT:
+            WebPL.AddUserToAdmins(WebPL.GetUserByLogin(user.Login).Id);
             Response.Write("Успешно зарегистрирован. Войдите под своим паролем.");
             return;
         default:

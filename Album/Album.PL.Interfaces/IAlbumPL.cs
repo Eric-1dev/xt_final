@@ -14,6 +14,8 @@ namespace Album.PL.Interfaces
         void SetUserPassword(Guid userId, string password);
         User GetUserByLogin(string login);
         User GetUserById(Guid id);
+        bool AddUserToAdmins(Guid userId);
+        IEnumerable<User> GetAllUsers();
         bool IsAccountExist(string login, string password);
     }
 }

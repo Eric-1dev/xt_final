@@ -91,9 +91,19 @@ namespace Album.DAL.MSSQL
             return user;
         }
 
+        public bool AddUserToAdmins(Guid userId)
+        {
+            string stProc = "Album_AddUserToAdmins";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@UserId", userId)
+            };
+            return ExecuteNonQuery(stProc, param) > 0;
+        }
+
         public IEnumerable<User> GetAllUsers()
         {
-            string stProc = "UserAwards_GetAllUsers";
+            string stProc = "Album_GetAllUsers";
             var sqlData = ExecuteReader(stProc);
             var users = new LinkedList<User>();
 

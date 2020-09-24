@@ -13,6 +13,8 @@ namespace Album.BLL.Interfaces
         UserCheckStatus AddUser(User user);
         User GetUserById(Guid id);
         User GetUserByLogin(string login);
+        bool AddUserToAdmins(Guid userId);
+        IEnumerable<User> GetAllUsers();
         void SetUserPassword(Guid userId, string password);
         string[] GetRolesForUser(string login);
         bool IsUserInRole(string login, string roleName);

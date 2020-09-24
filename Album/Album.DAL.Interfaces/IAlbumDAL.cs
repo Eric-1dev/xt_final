@@ -16,6 +16,7 @@ namespace Album.DAL.Interfaces
         bool InsertComment(Comment comment);
         bool AddTagToPhoto(Guid photoId, Guid tagId);
         bool DeleteTagFromPhoto(Guid photoId, Guid tagId);
+        bool AddUserToAdmins(Guid userId);
         IEnumerable<User> GetAllUsers();
         User GetUserById(Guid id);
         User GetUserByLogin(string login);

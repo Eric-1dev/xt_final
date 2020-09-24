@@ -2,13 +2,30 @@
     Layout = "~/_MainLayout.cshtml";
 }
 
-<div class="container">
+<div class="container-fluid">
+    <div class="text-center text-muted"><h1>Интернет фотоальбом</h1></div>
     <div class="row">
         <div class="col-2" id="main_my_info">
             @RenderPage("~/Pages/mainUserInfoPartial.cshtml")
         </div>
-        <div class="col-8" id="main_photo">
-            @RenderPage("~/Pages/mainPhotoPartial.cshtml")
+        <div class="col-8">
+            <div class="row" id="main_find">
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Find</div>
+                    </div>
+                    <input type="text" class="form-control" id="findText" placeholder="Введите тег для поиска фото">
+                </div>
+            </div>
+            <div class="row" id="main_photo">
+                @RenderPage("~/Pages/mainPhotoPartial.cshtml")
+            </div>
+            <div class="row" id="main_tags">
+
+            </div>
+            <div class="row" id="main_comments">
+
+            </div>
         </div>
         <div class="col-2" id="main_users">
             @RenderPage("~/Pages/mainUsersPartial.cshtml")

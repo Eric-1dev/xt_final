@@ -95,6 +95,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="CSS\common.css" />
     <None Include="ErrorPage.cshtml" />
+    <Content Include="Images\no_avatar.png" />
+    <Content Include="Images\plus.png" />
     <Content Include="JS\common.js" />
     <Content Include="JS\login.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />

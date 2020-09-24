@@ -1,2 +1,14 @@
 ﻿body {
+    padding: 10px;
+}
+
+#my_avatar_wrapper {
+    max-height: 200px;
+    max-width: 150px;
+    margin: auto;
+}
+
+#my_avatar_wrapper img {
+    max-height: 100%;
+    max-width: 100%;
 }

@@ -9,6 +9,8 @@ function onReady() {
             $('#loginButton').click();
         }
     });
+
+    $('#login').focus();
 }
 
 function Login() {

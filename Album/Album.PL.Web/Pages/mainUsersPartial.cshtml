@@ -1,4 +1,15 @@
-﻿@{
-    Layout = null;
+﻿@using Album.PL.Web.Models
+@{
+    var WebPL = new WebAlbumPL();
+
+    var users = WebPL.GetAllUsers();
 }
 
+@foreach (var user in users)
+{
+    <text>
+        <div class="row">
+            @user.Login
+        </div>
+    </text>
+}

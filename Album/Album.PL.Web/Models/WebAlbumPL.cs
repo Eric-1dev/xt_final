@@ -19,8 +19,12 @@ namespace Album.PL.Web.Models
 
         public User GetUserByLogin(string login) => BLL.GetUserByLogin(login);
 
+        public bool AddUserToAdmins(Guid userId) => BLL.AddUserToAdmins(userId);
+
         public bool IsAccountExist(string login, string password) => BLL.IsAccountExist(login, password);
 
         public void SetUserPassword(Guid userId, string password) => BLL.SetUserPassword(userId, password);
+
+        public IEnumerable<User> GetAllUsers() => BLL.GetAllUsers();
     }
 }
