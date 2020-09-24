@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Album.Entities
 {
-    public class Photo
+    public class Tag
     {
         public Guid Id { get; set; }
-        public string FileName { get; set; }
-        public Guid UserId { get; set; }
+        public string TagName { get; set; }
     }
 }

@@ -15,7 +15,7 @@ function Login() {
     $.post("/Pages/loginLogic.cshtml",
         {
             Login: $('#login').val(),
-            Password: $.md5($('#password').val())
+            Password: $('#password').val()
         }, function (data) {
             if (data == "")
                 window.location.href = "/";
@@ -28,7 +28,7 @@ function Registration() {
     $.post("/Pages/registerLogic.cshtml",
         {
             Login: $('#login').val(),
-            Password: $.md5($('#password').val()),
+            Password: $('#password').val(),
             IsAdmin: $('#is_admin').prop('checked')
         }, function (data) {
             $('#result').html(data);

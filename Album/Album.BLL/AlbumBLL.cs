@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Album.BLL
@@ -16,10 +17,14 @@ namespace Album.BLL
 
         public UserCheckStatus AddUser(User user)
         {
-            // TODO Check correction
-            DAL.InsertUser(user);
+            var checkResult = UserCorrectionCheck(user);
+            if (checkResult == UserCheckStatus.CORRECT)
+            {
 
-            return UserCheckStatus.CORRECT;
+                DAL.InsertUser(user);
+            }
+
+            return checkResult;
         }
 
         public string[] GetRolesForUser(string login) => DAL.GetRolesForUser(login);
@@ -33,5 +38,17 @@ namespace Album.BLL
         public void SetUserPassword(Guid userId, string password) => DAL.SetUserPassword(userId, password);
 
         public bool IsAccountExist(string login, string password) => DAL.IsAccountExist(login, password);
+
+        public UserCheckStatus UserCorrectionCheck(User user)
+        {
+            string nameCheck = @"^[a-zA-Z0-9_\-]{3,20}$";
+            if (!Regex.IsMatch(user.Login, nameCheck))
+                return UserCheckStatus.INCORRECT_NAME;
+
+            if (DAL.GetUserByLogin(user.Login) != null)
+                return UserCheckStatus.ALLREADY_EXIST;
+
+            return UserCheckStatus.CORRECT;
+        }
     }
 }

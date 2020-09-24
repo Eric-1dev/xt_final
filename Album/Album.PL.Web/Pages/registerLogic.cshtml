@@ -25,7 +25,6 @@
             }
             return;
         case UserCheckStatus.CORRECT:
-            WebPL.SetUserPassword(user.Id, password);
             Response.Write("Успешно зарегистрирован. Войдите под своим паролем.");
             return;
         default:

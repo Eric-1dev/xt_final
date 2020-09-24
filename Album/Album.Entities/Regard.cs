@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Album.Entities
 {
-    class Regard
+    public class Regard
     {
         public Guid Id { get; set; }
         public Guid PhotoId { get; set; }
-        public Guid UserId { get; set; }
-        public string Comment { get; set; }
-        public int Rating { get; set; }
+        public Guid AuthorId { get; set; }
+        public byte Rating { get; set; }
     }
 }

@@ -41,8 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comment.cs" />
     <Compile Include="Photo.cs" />
+    <Compile Include="PhotoTagAssoc.cs" />
     <Compile Include="Regard.cs" />
+    <Compile Include="Tag.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
