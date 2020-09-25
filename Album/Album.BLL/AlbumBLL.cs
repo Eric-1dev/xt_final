@@ -13,14 +13,13 @@ namespace Album.BLL
 {
     public class AlbumBLL : IAlbumBLL
     {
-        private readonly IAlbumDAL DAL = AlbumDALDR.AlbumDAL;
+        private readonly IAlbumDBDAL DAL = AlbumDALDR.AlbumDAL;
 
         public UserCheckStatus AddUser(User user)
         {
             var checkResult = UserCorrectionCheck(user);
             if (checkResult == UserCheckStatus.CORRECT)
             {
-
                 DAL.InsertUser(user);
             }
 
@@ -42,6 +41,8 @@ namespace Album.BLL
 
         public bool IsAccountExist(string login, string password) => DAL.IsAccountExist(login, password);
 
+        public bool IsUserActive(string login) => DAL.IsUserActive(login);
+
         public UserCheckStatus UserCorrectionCheck(User user)
         {
             string loginCheck = @"^[a-zA-Z0-9_\-]{3,20}$";
@@ -51,6 +52,7 @@ namespace Album.BLL
 
             if (user.Name != null)
             {
+                user.Name = user.Name.Trim();
                 if (!Regex.IsMatch(user.Name, NameCheck))
                     return UserCheckStatus.INCORRECT_NAME;
             }
@@ -59,6 +61,22 @@ namespace Album.BLL
                 return UserCheckStatus.ALLREADY_EXIST;
 
             return UserCheckStatus.CORRECT;
+        }
+
+        public bool ChangeUserById(Guid id, User user)
+        {
+            var user_old = GetUserById(id);
+
+            if (user_old == null)
+                return false;
+
+            user.Name = user.Name.Trim();
+
+            user.Password = user_old.Password;
+
+            DAL.UpdateUserById(id, user);
+
+            return true;
         }
     }
 }

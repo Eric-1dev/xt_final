@@ -8,8 +8,9 @@ namespace Album.Entities
 {
     public class PhotoTagAssoc
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
         public Guid PhotoId { get; set; }
         public Guid TagId { get; set; }
+        public DateTime Date { get; set; }
     }
 }

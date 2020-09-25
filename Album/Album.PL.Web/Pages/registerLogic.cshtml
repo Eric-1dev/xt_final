@@ -5,6 +5,11 @@
 
     var login = Request["Login"];
     var password = Request["Password"];
+    if (password == "")
+    {
+        Response.Write("Пароль не может быть пустым");
+        return;
+    }
 
     var user = new User();
     user.Login = login;
@@ -28,7 +33,10 @@
             }
             return;
         case UserCheckStatus.CORRECT:
-            WebPL.AddUserToAdmins(WebPL.GetUserByLogin(user.Login).Id);
+            if (isAdmin)
+            {
+                WebPL.AddUserToAdmins(WebPL.GetUserByLogin(user.Login).Id);
+            }
             Response.Write("Успешно зарегистрирован. Войдите под своим паролем.");
             return;
         default:

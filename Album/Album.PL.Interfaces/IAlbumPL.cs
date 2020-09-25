@@ -17,5 +17,8 @@ namespace Album.PL.Interfaces
         bool AddUserToAdmins(Guid userId);
         IEnumerable<User> GetAllUsers();
         bool IsAccountExist(string login, string password);
+        UserCheckStatus UserCorrectionCheck(User user);
+        bool ChangeUserById(Guid id, User user);
+        bool IsUserActive(string login);
     }
 }

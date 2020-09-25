@@ -1,5 +1,8 @@
-﻿@{
-    Layout = "~/_AuthLayout.cshtml";
+﻿@using Album.PL.Web.Models
+@{
+    var WebPL = new WebAlbumPL();
+
+    string name = User.Identity.IsAuthenticated ? WebPL.GetUserByLogin(User.Identity.Name).Login : "Гость";
 }
 
 <!DOCTYPE html>
@@ -9,10 +12,22 @@
     <title>Фотоальбом</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/CSS/common.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/JS/common.js"></script>
 </head>
 <body>
+    <div class="d-flex align-items-baseline" id="user_name_top">
+        <div class="text-info float-left">Привет, @name</div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <text><button class="btn btn-sm btn-success float-left ml-2" id="btnLogout">Выход</button></text>
+        }
+        else
+        {
+            <text><button class="btn btn-sm btn-success float-left ml-2" id="btnLogin">Вход / Регистрация</button></text>
+        }
+    </div>
     @RenderBody()
 </body>
 </html>

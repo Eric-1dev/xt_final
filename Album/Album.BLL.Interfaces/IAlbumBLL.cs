@@ -14,10 +14,13 @@ namespace Album.BLL.Interfaces
         User GetUserById(Guid id);
         User GetUserByLogin(string login);
         bool AddUserToAdmins(Guid userId);
+        bool ChangeUserById(Guid id, User user);
         IEnumerable<User> GetAllUsers();
         void SetUserPassword(Guid userId, string password);
         string[] GetRolesForUser(string login);
         bool IsUserInRole(string login, string roleName);
         bool IsAccountExist(string login, string password);
+        bool IsUserActive(string login);
+        UserCheckStatus UserCorrectionCheck(User user);
     }
 }

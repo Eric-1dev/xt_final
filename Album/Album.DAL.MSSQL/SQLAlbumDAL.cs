@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Album.DAL.MSSQL
 {
-    public class SQLAlbumDAL : IAlbumDAL
+    public class SQLAlbumDAL : IAlbumDBDAL
     {
         private static readonly string _connectionString = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
         public string[] GetRolesForUser(string login)
@@ -34,7 +34,7 @@ namespace Album.DAL.MSSQL
             string stProc = "Album_IsUserAdmin";
             var param = new KeyValuePair<string, object>[]
             {
-                new KeyValuePair<string, object>("@Name", login),
+                new KeyValuePair<string, object>("@Login", login),
             };
             var sqlData = ExecuteScalar(stProc, param);
             return (int)sqlData > 0;
@@ -58,7 +58,8 @@ namespace Album.DAL.MSSQL
                     Login = item["Login"].ToString(),
                     Password = item["Password"].ToString(),
                     Name = item["Name"].ToString(),
-                    Avatar = item["Avatar"].ToString() == "" ? null : item["Avatar"].ToString()
+                    Avatar = item["Avatar"].ToString() == "" ? null : item["Avatar"].ToString(),
+                    Active = (bool)item["Active"]
                 };
             }
 
@@ -84,11 +85,26 @@ namespace Album.DAL.MSSQL
                     Login = item["Login"].ToString(),
                     Password = item["Password"].ToString(),
                     Name = item["Name"].ToString(),
-                    Avatar = item["Avatar"].ToString() == "" ? null : item["Avatar"].ToString()
+                    Avatar = item["Avatar"].ToString() == "" ? null : item["Avatar"].ToString(),
+                    Active = (bool)item["Active"]
                 };
             }
 
             return user;
+        }
+
+        public bool UpdateUserById(Guid id, User user)
+        {
+            string stProc = "Album_UpdateUserById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", user.Id),
+                new KeyValuePair<string, object>("@Name", user.Name),
+                new KeyValuePair<string, object>("@Password", user.Password),
+                new KeyValuePair<string, object>("@Avatar", user.Avatar),
+                new KeyValuePair<string, object>("@Active", user.Active)
+            };
+            return ExecuteNonQuery(stProc, param) > 0;
         }
 
         public bool AddUserToAdmins(Guid userId)
@@ -115,7 +131,8 @@ namespace Album.DAL.MSSQL
                     Login = item["Login"].ToString(),
                     Password = item["Password"].ToString(),
                     Name = item["Name"].ToString(),
-                    Avatar = item["Avatar"].ToString() == "" ? null : item["Avatar"].ToString()
+                    Avatar = item["Avatar"].ToString() == "" ? null : item["Avatar"].ToString(),
+                    Active = (bool)item["Active"]
                 };
 
                 users.AddLast(user);
@@ -235,6 +252,17 @@ namespace Album.DAL.MSSQL
             {
                 new KeyValuePair<string, object>("@Login", login),
                 new KeyValuePair<string, object>("@Password", password)
+            };
+            var sqlData = ExecuteScalar(stProc, param);
+            return (int)sqlData > 0;
+        }
+
+        public bool IsUserActive(string login)
+        {
+            string stProc = "Album_IsUserActive";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Login", login)
             };
             var sqlData = ExecuteScalar(stProc, param);
             return (int)sqlData > 0;

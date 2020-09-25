@@ -1,15 +1,26 @@
 ﻿@using Album.PL.Web.Models
+@using Album.Entities
 @{
     var WebPL = new WebAlbumPL();
 
-    var users = WebPL.GetAllUsers();
+    var users = WebPL.GetAllUsers().Where(user => user.Login != User.Identity.Name);
 }
 
-@foreach (var user in users)
-{
-    <text>
-        <div class="row">
-            @user.Login
-        </div>
-    </text>
-}
+<div id="users_list_wrapper" class="m-2 border">
+    @foreach (var user in users)
+    {
+        var avatar = user.Avatar != null ? user.Avatar : "/Images/no_avatar.png";
+        <text>
+            <div class="row m-0 d-flex align-items-baseline main_users_row">
+                <div><img src="@avatar" /></div>
+                <div class="text-dark">@user.Name</div>
+                @if (User.IsInRole("user"))
+                {
+                    <text>
+                        <div class="btn btn-sm btn-link btn_user_edit right_user_info" id="@user.Id">(?)</div>
+                    </text>
+                }
+            </div>
+        </text>
+    }
+</div>

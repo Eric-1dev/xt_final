@@ -7,7 +7,11 @@
 
     if (WebPL.IsAccountExist(login, password))
     {
-        FormsAuthentication.SetAuthCookie(login, createPersistentCookie: true);
+        if (WebPL.IsUserActive(login))
+        {
+            FormsAuthentication.SetAuthCookie(login, createPersistentCookie: true);
+        }
+        Response.Write("Пользователь заблокирован.");
     }
     else
     {

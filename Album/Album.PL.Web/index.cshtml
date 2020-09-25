@@ -2,13 +2,13 @@
     Layout = "~/_MainLayout.cshtml";
 }
 
-<div class="container-fluid">
-    <div class="text-center text-muted"><h1>Интернет фотоальбом</h1></div>
-    <div class="row">
+<div class="text-center text-muted"><h1>Интернет фотоальбом</h1></div>
+<div class="container-fluid d-flex flex-column">
+    <div class="row flex-fill d-flex h-100 justify-content-start">
         <div class="col-2" id="main_my_info">
             @RenderPage("~/Pages/mainUserInfoPartial.cshtml")
         </div>
-        <div class="col-8">
+        <div class="col-7">
             <div class="row" id="main_find">
                 <div class="input-group mb-2">
                     <div class="input-group-prepend">
@@ -21,16 +21,18 @@
                 @RenderPage("~/Pages/mainPhotoPartial.cshtml")
             </div>
             <div class="row" id="main_tags">
-
+                @RenderPage("~/Pages/mainTagsPartial.cshtml")
             </div>
             <div class="row" id="main_comments">
 
             </div>
         </div>
-        <div class="col-2" id="main_users">
+        <div class="col-3" id="main_users">
             @RenderPage("~/Pages/mainUsersPartial.cshtml")
         </div>
     </div>
 </div>
 
+
 @RenderPage("~/Pages/_toast.cshtml")
+@RenderPage("~/Pages/userEditModal.cshtml")

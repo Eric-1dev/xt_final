@@ -5,7 +5,7 @@ namespace Album.DAL.DR
 {
     public static class AlbumDALDR
     {
-        private static IAlbumDAL _albumDAL;
-        public static IAlbumDAL AlbumDAL => _albumDAL ?? (_albumDAL = new SQLAlbumDAL());
+        private static IAlbumDBDAL _albumDAL;
+        public static IAlbumDBDAL AlbumDAL => _albumDAL ?? (_albumDAL = new SQLAlbumDAL());
     }
 }

@@ -23,8 +23,14 @@ namespace Album.PL.Web.Models
 
         public bool IsAccountExist(string login, string password) => BLL.IsAccountExist(login, password);
 
+        public bool IsUserActive(string login) => BLL.IsUserActive(login);
+
         public void SetUserPassword(Guid userId, string password) => BLL.SetUserPassword(userId, password);
 
         public IEnumerable<User> GetAllUsers() => BLL.GetAllUsers();
+
+        public UserCheckStatus UserCorrectionCheck(User user) => BLL.UserCorrectionCheck(user);
+
+        public bool ChangeUserById(Guid id, User user) => BLL.ChangeUserById(id, user);
     }
 }

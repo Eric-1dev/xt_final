@@ -1,0 +1,12 @@
+﻿@using Album.PL.Web.Models
+@using Newtonsoft.Json
+@{
+    var WebPL = new WebAlbumPL();
+    Guid guid;
+    Guid.TryParse(Request["id"], out guid);
+    var user = WebPL.GetUserById(guid);
+
+    var json = JsonConvert.SerializeObject(user);
+
+    Response.Write(json);
+}
