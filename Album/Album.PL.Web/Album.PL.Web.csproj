@@ -98,6 +98,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="CSS\common.css" />
     <None Include="ErrorPage.cshtml" />
+    <Content Include="CSS\login.css" />
     <Content Include="Images\no_avatar.png" />
     <Content Include="Images\plus.png" />
     <Content Include="JS\common.js" />
@@ -135,9 +136,12 @@
     <Content Include="Pages\mainPhotoPartial.cshtml" />
     <Content Include="Pages\mainUserInfoPartial.cshtml" />
     <Content Include="Pages\mainTagsPartial.cshtml" />
-    <Content Include="Pages\userEditModal.cshtml" />
+    <Content Include="Pages\_userEditModal.cshtml" />
     <Content Include="Pages\getUserInfo.cshtml" />
-    <Content Include="Pages\UserSave.cshtml" />
+    <Content Include="Pages\userSave.cshtml" />
+    <Content Include="Pages\_modalConfirm.cshtml" />
+    <Content Include="Pages\userDelete.cshtml" />
+    <Content Include="Pages\_photoEditModal.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />

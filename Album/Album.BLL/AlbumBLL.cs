@@ -46,7 +46,7 @@ namespace Album.BLL
         public UserCheckStatus UserCorrectionCheck(User user)
         {
             string loginCheck = @"^[a-zA-Z0-9_\-]{3,20}$";
-            string NameCheck = @"[a-zA-Zа-яА-ЯёЁ0-9_\-\s]{3,50}";
+            string NameCheck = @"[a-zA-Zа-яА-ЯёЁ0-9_\-\s]{2,50}";
             if (!Regex.IsMatch(user.Login, loginCheck))
                 return UserCheckStatus.INCORRECT_LOGIN;
 
@@ -78,5 +78,9 @@ namespace Album.BLL
 
             return true;
         }
+
+        public bool RemoveUserById(Guid id) => DAL.DeleteUserById(id);
+
+        public IEnumerable<Photo> GetPhotosByUserId(Guid userId) => DAL.GetPhotosByUserId(userId);
     }
 }

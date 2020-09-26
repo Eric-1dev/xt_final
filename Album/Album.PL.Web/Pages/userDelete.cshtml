@@ -1,0 +1,18 @@
+﻿@using Album.PL.Web.Models
+@{
+    if (!User.IsInRole("admin"))
+    {
+        Response.Write("У вас нет прав на удаление пользователей.");
+        return;
+    }
+
+    var WebPL = new WebAlbumPL();
+
+    Guid id;
+    Guid.TryParse(Request["Id"], out id);
+
+    if (!WebPL.RemoveUserById(id))
+    {
+        Response.Write("Ошибка удаления.");
+    }
+}

@@ -20,5 +20,7 @@ namespace Album.PL.Interfaces
         UserCheckStatus UserCorrectionCheck(User user);
         bool ChangeUserById(Guid id, User user);
         bool IsUserActive(string login);
+        bool RemoveUserById(Guid id);
+        IEnumerable<Photo> GetPhotosByUserId(Guid userId);
     }
 }

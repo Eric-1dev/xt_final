@@ -10,6 +10,7 @@
         if (WebPL.IsUserActive(login))
         {
             FormsAuthentication.SetAuthCookie(login, createPersistentCookie: true);
+            return;
         }
         Response.Write("Пользователь заблокирован.");
     }

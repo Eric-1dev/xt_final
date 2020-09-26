@@ -14,6 +14,7 @@ namespace Album.BLL.Interfaces
         User GetUserById(Guid id);
         User GetUserByLogin(string login);
         bool AddUserToAdmins(Guid userId);
+        bool RemoveUserById(Guid id);
         bool ChangeUserById(Guid id, User user);
         IEnumerable<User> GetAllUsers();
         void SetUserPassword(Guid userId, string password);
@@ -22,5 +23,6 @@ namespace Album.BLL.Interfaces
         bool IsAccountExist(string login, string password);
         bool IsUserActive(string login);
         UserCheckStatus UserCorrectionCheck(User user);
+        IEnumerable<Photo> GetPhotosByUserId(Guid userId);
     }
 }

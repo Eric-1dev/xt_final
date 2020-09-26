@@ -32,5 +32,9 @@ namespace Album.PL.Web.Models
         public UserCheckStatus UserCorrectionCheck(User user) => BLL.UserCorrectionCheck(user);
 
         public bool ChangeUserById(Guid id, User user) => BLL.ChangeUserById(id, user);
+
+        public bool RemoveUserById(Guid id) => BLL.RemoveUserById(id);
+
+        public IEnumerable<Photo> GetPhotosByUserId(Guid userId) => BLL.GetPhotosByUserId(userId);
     }
 }

@@ -2,6 +2,11 @@
 @{
     var WebPL = new WebAlbumPL();
 
+    short superuser = 0;
+    if (User.IsInRole("admin"))
+    {
+        superuser = 1;
+    }
     string name = User.Identity.IsAuthenticated ? WebPL.GetUserByLogin(User.Identity.Name).Login : "Гость";
 }
 
@@ -19,6 +24,7 @@
 <body>
     <div class="d-flex align-items-baseline" id="user_name_top">
         <div class="text-info float-left">Привет, @name</div>
+        <input type="hidden" id="superuser" value="@superuser" />
         @if (User.Identity.IsAuthenticated)
         {
             <text><button class="btn btn-sm btn-success float-left ml-2" id="btnLogout">Выход</button></text>

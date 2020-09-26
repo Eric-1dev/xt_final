@@ -1,11 +1,4 @@
-﻿@using Album.PL.Web.Models
-@{
-    var WebPL = new WebAlbumPL();
-
-
-}
-
-<div class="modal fade" id="userEditModal" tabindex="-1" role="dialog">
+﻿<div class="modal fade" id="userEditModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -16,6 +9,7 @@
             </div>
             <div class="modal-body" id="modal-body">
                 <input type="hidden" id="modal_user_id">
+                <input type="hidden" id="modal_type">
                 <input type="file" id="modal_file" class="modal_file" accept="image/png, image/jpeg" hidden />
                 <div class="row modal_row">
                     <div class="col">
@@ -38,7 +32,7 @@
                         @if (User.IsInRole("admin"))
                         {
                             <text>
-                                <div class="input-group mb-3 pl-3">
+                                <div class="input-group mb-3 pl-3" id="modal_active">
                                     <input type="checkbox" class="form-check-input" id="modal_user_active">
                                     <div class="text-dark">Пользователь активен</div>
                                 </div>
@@ -48,6 +42,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-danger float-left" id="modal_delete">Удалить</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
                 <button type="button" class="btn btn-primary" id="modal_save">Сохранить</button>
             </div>

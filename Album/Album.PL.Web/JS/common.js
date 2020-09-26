@@ -8,6 +8,11 @@ function Ready() {
     $('.btn_user_edit').click(UserEdit);
     $('#modal_file').change(UploadAvatar);
     $('#modal_save').click(UserSave);
+    $('#modal_delete').click(UserDelete);
+    $('#btn_my_album').click(ShowPhotos);
+    $('.main_users_row').click(ShowPhotos);
+    $('#btn_add_photo').click(EditPhoto);
+    $('#photo_file').change(UploadPhoto);
 }
 
 function ShowMessage(data) {
@@ -25,9 +30,31 @@ function Login() {
 
 function UserEdit() {
     event.stopPropagation();
-    let id = this.id;
+    let id;
+    let type;
+    if ($(this).hasClass('right_users_edit_but')) {
+        type = "otherUser";
+        id = $(this).parent().attr('id');
+        $('#modal_active').show();
+        if ($('#superuser').val() == 1) {
+            $('#modal_delete').show();
+            $('#modal_save').show();
+        }
+        else {
+            $('#modal_delete').hide();
+            $('#modal_save').hide();
+        }
+    }
+    else {
+        type = "myInfo";
+        id = $(this).attr('id');
+        $('#modal_active').hide();
+        $('#modal_delete').hide();
+        $('#modal_save').show();
+    }
 
     $('#modal_user_id').val(id);
+    $('#modal_type').val(type);
     $('#modal_user_image').attr('src', no_avatar);
 
     $.getJSON('/Pages/getUserInfo.cshtml', { 'id': id }, function (data) {
@@ -41,9 +68,25 @@ function UserEdit() {
             $('#modal_user_image').attr('src', data['Image']);
     });
 
-    $("#userEditModal").modal('show');
+    $('#userEditModal').modal('show');
+}
 
-    // TODO update userlist
+function UpdateMyInfo() {
+    $.post("/Pages/mainUserInfoPartial.cshtml",
+        null,
+        function (data) {
+            $('#main_my_info').html(data);
+            $('.btn_user_edit').click(UserEdit);
+        });
+}
+
+function UpdateUsersList() {
+    $.post("/Pages/mainUsersPartial.cshtml",
+        null,
+        function (data) {
+            $('#main_users').html(data);
+            $('.btn_user_edit').click(UserEdit);
+        });
 }
 
 function UploadAvatar() {
@@ -81,6 +124,41 @@ function UploadAvatar() {
     }
 }
 
+function UploadPhoto() {
+    if (this.files && this.files[0]) {
+        let max_width = parseInt($('#photo_div_image').css('max-width'));
+        let max_height = parseInt($('#photo_div_image').css('max-height'));
+
+        let reader = new FileReader();
+
+        reader.readAsDataURL(this.files[0]);
+        reader.onload = function (event) {
+            let img = new Image(); // Масштабируем
+
+            img.src = event.target.result;
+            img.onload = () => {
+                // Масштабируем под новые размеры, сохраняя пропорции
+                let scaleFactor = img.height / img.width;
+                let new_width = max_width;
+                let new_height = new_width * scaleFactor;
+                if (new_height > max_height) {
+                    new_height = max_height;
+                    new_width = new_height / scaleFactor;
+                }
+                /////////////////////////////////////////////////////
+                let elem = document.createElement('canvas');
+                elem.width = new_width;
+                elem.height = new_height;
+                let ctx = elem.getContext('2d');
+
+                ctx.drawImage(img, 0, 0, new_width, new_height);
+
+                $('#modal_photo_image').attr('src', elem.toDataURL());
+            }
+        }
+    }
+}
+
 function UserSave() {
     let data = {};
 
@@ -95,15 +173,55 @@ function UserSave() {
     data.Avatar = avatar;
     data.Active = $('#modal_user_active').prop('checked');
 
-    $.post("/Pages/UserSave.cshtml",
+    $.post("/Pages/userSave.cshtml",
         data,
         function (data) {
             if (data == "") {
                 $("#userEditModal").modal('hide');
                 ShowMessage("Данные пользователя успешно обновлены");
-                UpdateItemsList('user');
+                if ($('#modal_type').val() == "myInfo")
+                    UpdateMyInfo();
+                else
+                    UpdateUsersList();
             }
             else
                 ShowMessage(data);
         });
+}
+
+function UserDelete() {
+    let id = $('#modal_user_id').val();
+    let name = $('#modal_user_name').val();
+
+    $('#confirm_body').html("Вы действительно хотите удалить пользователя " + name + "? Удалятся все его фотографии.");
+
+    $('#confirm_delete_but').click(function () {
+        $.post("/Pages/userDelete.cshtml",
+            {
+                Id: id
+            },
+            function (data) {
+                if (data == "") {
+                    ShowMessage("Успешно удалено");
+                    $("#userEditModal").modal('hide');
+                }
+                else
+                    ShowMessage(data);
+                $('#confirm_delete').modal('hide');
+                UpdateUsersList();
+            });
+    })
+    $('#confirm_delete').modal('show');
+}
+
+function ShowPhotos() {
+    $.post("/Pages/mainPhotoPartial.cshtml",
+        { id: $(this).attr('id') },
+        function (data) {
+            $('#main_photo').html(data);
+        });
+}
+
+function EditPhoto() {
+    $('#photoEditModal').modal('show');
 }

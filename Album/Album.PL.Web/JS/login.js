@@ -3,6 +3,7 @@
 function onReady() {
     $('#loginButton').click(Login);
     $('#registrationButton').click(Registration);
+    $('#guestButton').click(Guestlogin);
 
     $(document).keydown(function (event) {
         if (event.keyCode === 13) {
@@ -35,4 +36,8 @@ function Registration() {
         }, function (data) {
             $('#result').html(data);
         });
+}
+
+function Guestlogin() {
+    window.location.href = "/";
 }

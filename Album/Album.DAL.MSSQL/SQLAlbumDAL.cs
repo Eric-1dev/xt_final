@@ -141,12 +141,12 @@ namespace Album.DAL.MSSQL
             return users;
         }
 
-        public IEnumerable<Photo> GetPhotosByUserId(Guid UserId)
+        public IEnumerable<Photo> GetPhotosByUserId(Guid userId)
         {
             string stProc = "Album_GetPhotosByUserId";
             var param = new KeyValuePair<string, object>[]
             {
-                new KeyValuePair<string, object>("@UserId", UserId),
+                new KeyValuePair<string, object>("@UserId", userId),
             };
             var sqlData = ExecuteReader(stProc, param);
             var photos = new LinkedList<Photo>();

@@ -1,6 +1,23 @@
 ﻿@using Album.PL.Web.Models
+@using Album.Entities
 @{
     var WebPL = new WebAlbumPL();
 
-    
+    bool myAlbum = false;
+    Guid photoOwnerId;
+    Guid.TryParse(Request["userId"], out photoOwnerId);
+
+    User photoOwner = WebPL.GetUserById(photoOwnerId);
+
+    IEnumerable<Photo> photos = null;
+
+    if (photoOwner != null)
+    {
+        if (User.Identity.Name == WebPL.GetUserById(photoOwnerId).Login)
+        {
+            myAlbum = true;
+        }
+
+        photos = WebPL.GetPhotosByUserId(photoOwnerId);
+    }
 }
