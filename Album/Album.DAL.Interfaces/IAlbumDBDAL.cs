@@ -27,6 +27,7 @@ namespace Album.DAL.Interfaces
         User GetUserById(Guid id);
         User GetUserByLogin(string login);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
+        IEnumerable<Photo> GetMostPopularPhotos();
         string[] GetRolesForUser(string login);
         bool IsUserInRole(string login, string roleName);
         bool SetUserPassword(Guid userId, string password);

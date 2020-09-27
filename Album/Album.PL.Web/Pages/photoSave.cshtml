@@ -1,0 +1,14 @@
+﻿@using Album.PL.Web.Models
+@{
+    var WebPL = new WebAlbumPL();
+
+    if (Request["photoId"] == "null")
+    {
+        var file = Request.Files["file"];
+
+        if (file != null)
+        {
+            WebPL.SavePhoto(file.InputStream, Path.GetExtension(file.FileName), WebPL.GetUserByLogin(User.Identity.Name).Id);
+        }
+    }
+}

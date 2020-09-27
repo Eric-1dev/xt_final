@@ -211,8 +211,9 @@ namespace Album.DAL.MSSQL
                 var photo = new Photo
                 {
                     Id = (Guid)item["Id"],
-                    FileName = item["Filename"].ToString(),
-                    UserId = (Guid)item["UserId"]
+                    FileName = item["FileName"].ToString(),
+                    UserId = (Guid)item["UserId"],
+                    Date = (DateTime)(item["Date"])
                 };
 
                 photos.AddLast(photo);
@@ -340,6 +341,7 @@ namespace Album.DAL.MSSQL
             string stProc = "Album_InsertPhoto";
             var param = new KeyValuePair<string, object>[]
             {
+                new KeyValuePair<string, object>("@Id", photo.Id),
                 new KeyValuePair<string, object>("@FileName", photo.FileName),
                 new KeyValuePair<string, object>("@UserId", photo.UserId)
             };
@@ -384,6 +386,28 @@ namespace Album.DAL.MSSQL
                 new KeyValuePair<string, object>("@Id", id)
             };
             return ExecuteNonQuery(stProc, param) > 0;
+        }
+
+        public IEnumerable<Photo> GetMostPopularPhotos()
+        {
+            string stProc = "Album_MostPopularPhoto";
+            var sqlData = ExecuteReader(stProc);
+            var photos = new LinkedList<Photo>();
+
+            foreach (var item in sqlData)
+            {
+                var photo = new Photo
+                {
+                    Id = (Guid)item["Id"],
+                    FileName = item["FileName"].ToString(),
+                    UserId = (Guid)item["UserId"],
+                    Date = (DateTime)(item["Date"])
+                };
+
+                photos.AddLast(photo);
+            }
+
+            return photos;
         }
     }
 }

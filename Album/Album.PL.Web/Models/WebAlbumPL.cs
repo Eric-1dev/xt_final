@@ -4,6 +4,7 @@ using Album.Entities;
 using Album.PL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -52,5 +53,9 @@ namespace Album.PL.Web.Models
         public bool DeleteCommentById(Guid id) => BLL.DeleteCommentById(id);
 
         public bool DeleteRegardById(Guid id) => BLL.DeleteRegardById(id);
+
+        public IEnumerable<Photo> GetMostPopularPhotos() => BLL.GetMostPopularPhotos();
+
+        public void SavePhoto(Stream file, string origName, Guid userId) => BLL.SaveFile(file, origName, userId);
     }
 }

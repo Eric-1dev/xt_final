@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,5 +33,7 @@ namespace Album.BLL.Interfaces
         bool IsUserActive(string login);
         UserCheckStatus UserCorrectionCheck(User user);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
+        IEnumerable<Photo> GetMostPopularPhotos();
+        void SaveFile(Stream file, string extension, Guid userId);
     }
 }

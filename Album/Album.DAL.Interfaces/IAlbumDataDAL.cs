@@ -9,7 +9,6 @@ namespace Album.DAL.Interfaces
 {
     public interface IAlbumDataDAL
     {
-        string SavePhoto(FileStream fs);
-        FileStream GetPhoto(string fileName);
+        void SaveFile(Stream fs, string fullPath);
     }
 }

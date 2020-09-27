@@ -45,6 +45,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Album.DAL.File\Album.DAL.File.csproj">
+      <Project>{8981d84e-f8f2-4044-864a-226ec375d300}</Project>
+      <Name>Album.DAL.File</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Album.DAL.Interfaces\Album.DAL.Interfaces.csproj">
       <Project>{DD36AC14-E5A0-4685-83D4-B923891958C9}</Project>
       <Name>Album.DAL.Interfaces</Name>

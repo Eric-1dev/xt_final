@@ -4,6 +4,7 @@ using Album.DAL.Interfaces;
 using Album.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,6 +15,9 @@ namespace Album.BLL
     public class AlbumBLL : IAlbumBLL
     {
         private readonly IAlbumDBDAL DAL = AlbumDALDR.AlbumDAL;
+        private readonly IAlbumDataDAL FileDAL = AlbumDALDR.AlbumFileDAL;
+
+        private readonly string fileDirectory = @"D:\EPAM\xt_final\Album\Album.PL.Web\Images\Photos";
 
         public UserCheckStatus AddUser(User user)
         {
@@ -89,14 +93,36 @@ namespace Album.BLL
 
         public bool AddRegard(Regard regard) => DAL.InsertRegard(regard);
 
-        public bool AddTagToPhoto(Guid photoId, Guid tagId) => DAL.AddTagToPhoto(photoId, tagId);
+        public bool AddTagToPhoto(Guid photoId, Guid tagId)
+        {
+            // TODO add tag if not exist
+            return DAL.AddTagToPhoto(photoId, tagId);
+        }
 
-        public bool DeleteTagFromPhoto(Guid photoId, Guid tagId) => DAL.DeleteTagFromPhoto(photoId, tagId);
+        public bool DeleteTagFromPhoto(Guid photoId, Guid tagId)
+        {
+            // TODO delete tag from DB if it was last using of it
+            return DAL.DeleteTagFromPhoto(photoId, tagId);
+        }
 
         public bool DeletePhotoById(Guid id) => DAL.DeletePhotoById(id);
 
         public bool DeleteCommentById(Guid id) => DAL.DeleteCommentById(id);
 
         public bool DeleteRegardById(Guid id) => DAL.DeleteRegardById(id);
+
+        public IEnumerable<Photo> GetMostPopularPhotos() => DAL.GetMostPopularPhotos();
+
+        public void SaveFile(Stream file, string extension, Guid userId)
+        {
+            var photo = new Photo
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId
+            };
+            photo.FileName = photo.Id.ToString() + extension;
+            DAL.InsertPhoto(photo);
+            FileDAL.SaveFile(file, fileDirectory + '\\' + photo.FileName);
+        }
     }
 }

@@ -3,76 +3,102 @@
 @{
     var WebPL = new WebAlbumPL();
 
-    bool myAlbum = false;
-    Guid photoOwnerId;
-    Guid.TryParse(Request["userId"], out photoOwnerId);
+    var type = Request["type"];
+    bool canEdit = false;
+    string placeholder = "";
 
-    User photoOwner = null;
-
-    if (photoOwnerId == Guid.Empty)
+    if (User.IsInRole("admin"))
     {
-        photoOwner = WebPL.GetUserByLogin(User.Identity.Name);
-        myAlbum = true;
-    }
-    else
-    {
-        photoOwner = WebPL.GetUserById(photoOwnerId);
+        canEdit = true;
     }
 
     IEnumerable<Photo> photos = null;
 
-    if (photoOwner != null)
+    switch (type)
     {
-        photos = WebPL.GetPhotosByUserId(photoOwnerId);
+        case "my":
+            {
+                canEdit = true;
+                var user = WebPL.GetUserByLogin(User.Identity.Name);
+                photos = WebPL.GetPhotosByUserId(user.Id);
+                placeholder = "У вас пока нет ни одной фотографии :( . Поделитесь новыми снимками!";
+            }
+            break;
+        case "user":
+            {
+                Guid userId;
+                Guid.TryParse(Request["userId"], out userId);
+
+                var user = WebPL.GetUserById(userId);
+
+                if (user != null)
+                {
+                    photos = WebPL.GetPhotosByUserId(user.Id);
+                }
+                placeholder = $"Пользователь {user.Name} пока не разместил ни одной фотографии :( . Заглядывайте сюда почаще, чтобы не пропустить новые кадры!";
+            }
+            break;
+        case "popular":
+            photos = WebPL.GetMostPopularPhotos();
+            break;
+        default:
+            photos = WebPL.GetMostPopularPhotos();
+            break;
     }
-}
 
-@if (photos != null)
-{
-    foreach (var photo in photos)
+    if (photos.Count() != 0)
     {
-        <text>
-            <!-- Grid column -->
-            <div class="col-lg-4 col-md-12 mb-4">
+        foreach (var photo in photos)
+        {
+            <text>
+                <!-- Grid column -->
+                <div class="col-lg-4 col-md-12 mb-4">
 
-                <!--Modal: Name-->
-                <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
+                    <!--Modal: Name-->
+                    <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
 
-                        <!--Content-->
-                        <div class="modal-content">
+                            <!--Content-->
+                            <div class="modal-content">
 
-                            <!--Body-->
-                            <div class="modal-body mb-0 p-0">
+                                <!--Body-->
+                                <div class="modal-body mb-0 p-0">
 
-                                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/GUEZCxBcM78"
-                                            allowfullscreen></iframe>
+                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/GUEZCxBcM78"
+                                                allowfullscreen></iframe>
+                                    </div>
+
+                                </div>
+
+                                <!--Footer-->
+                                <div class="modal-footer justify-content-center">
+
+                                    <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Закрыть</button>
+
                                 </div>
 
                             </div>
-
-                            <!--Footer-->
-                            <div class="modal-footer justify-content-center">
-
-                                <button type="button" class="btn btn-outline-primary btn-rounded btn-md ml-4" data-dismiss="modal">Закрыть</button>
-
-                            </div>
+                            <!--/.Content-->
 
                         </div>
-                        <!--/.Content-->
-
                     </div>
+                    <!--Modal: Name-->
+
+                    <a>
+                        <img class="img-fluid z-depth-1" src="https://mdbootstrap.com/img/screens/yt/screen-video-4.jpg" alt="video"
+                             data-toggle="modal" data-target="#modal2">
+                    </a>
+
                 </div>
-                <!--Modal: Name-->
-
-                <a>
-                    <img class="img-fluid z-depth-1" src="https://mdbootstrap.com/img/screens/yt/screen-video-4.jpg" alt="video"
-                         data-toggle="modal" data-target="#modal2">
-                </a>
-
-            </div>
-            <!-- Grid column -->
+                <!-- Grid column -->
+            </text>
+        }
+    }
+    else
+    {
+        <text>
+            <h4 class="text-dark">@placeholder</h4>
         </text>
     }
 }
