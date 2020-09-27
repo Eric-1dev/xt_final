@@ -135,7 +135,6 @@
     <Content Include="Pages\loginLogic.cshtml" />
     <Content Include="Pages\mainPhotoPartial.cshtml" />
     <Content Include="Pages\mainUserInfoPartial.cshtml" />
-    <Content Include="Pages\mainTagsPartial.cshtml" />
     <Content Include="Pages\_userEditModal.cshtml" />
     <Content Include="Pages\getUserInfo.cshtml" />
     <Content Include="Pages\userSave.cshtml" />

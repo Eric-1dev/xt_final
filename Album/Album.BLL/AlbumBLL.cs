@@ -121,8 +121,9 @@ namespace Album.BLL
                 UserId = userId
             };
             photo.FileName = photo.Id.ToString() + extension;
-            DAL.InsertPhoto(photo);
-            FileDAL.SaveFile(file, fileDirectory + '\\' + photo.FileName);
+            if (FileDAL.SaveFile(file, fileDirectory + '\\' + photo.FileName))
+                DAL.InsertPhoto(photo);
+            
         }
     }
 }

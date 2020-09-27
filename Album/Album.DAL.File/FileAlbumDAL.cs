@@ -10,11 +10,12 @@ namespace Album.DAL.File
 {
     public class FileAlbumDAL : IAlbumDataDAL
     {
-        public void SaveFile(Stream fs, string fullPath)
+        public bool SaveFile(Stream fs, string fullPath)
         {
             using (FileStream outputFileStream = new FileStream(fullPath, FileMode.Create))
             {
                 fs.CopyTo(outputFileStream);
+                return true;
             }
         }
     }

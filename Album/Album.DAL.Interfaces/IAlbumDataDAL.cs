@@ -9,6 +9,6 @@ namespace Album.DAL.Interfaces
 {
     public interface IAlbumDataDAL
     {
-        void SaveFile(Stream fs, string fullPath);
+        bool SaveFile(Stream fs, string fullPath);
     }
 }
