@@ -239,11 +239,13 @@ function PhotoSave(event, photoId = null) {
         dataType: 'json',
         data: myFormData,
         success: function (data) {
-            $("#photoEditModal").modal('hide');
-            if (photoId == null)
-                ShowMessage("Фото успешно добавлено");
-            else
-                ShowMessage("Фото успешно обновлено");
+            if (data == 0) {
+                $("#photoEditModal").modal('hide');
+                if (photoId == null)
+                    ShowMessage("Фото успешно добавлено");
+                else
+                    ShowMessage("Фото успешно обновлено");
+            }
         }
     });
 }

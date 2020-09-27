@@ -9,6 +9,7 @@
         if (file != null)
         {
             WebPL.SavePhoto(file.InputStream, Path.GetExtension(file.FileName), WebPL.GetUserByLogin(User.Identity.Name).Id);
+            Response.Write("0");
         }
     }
 }
