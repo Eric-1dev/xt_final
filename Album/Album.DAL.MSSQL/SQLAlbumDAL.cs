@@ -13,6 +13,61 @@ namespace Album.DAL.MSSQL
     public class SQLAlbumDAL : IAlbumDBDAL
     {
         private static readonly string _connectionString = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
+
+        #region HELPERS
+        private IEnumerable<SqlDataReader> ExecuteReader(string procedure, params KeyValuePair<string, object>[] parameters)
+        {
+            using (var _connection = new SqlConnection(_connectionString))
+            {
+                _connection.Open();
+
+                var reader = GetCommand(_connection, procedure, parameters).ExecuteReader();
+
+                while (reader.Read())
+                {
+                    yield return reader;
+                }
+            }
+        }
+
+        private object ExecuteScalar(string procedure, params KeyValuePair<string, object>[] parameters)
+        {
+            using (var _connection = new SqlConnection(_connectionString))
+            {
+                _connection.Open();
+
+                var scalar = GetCommand(_connection, procedure, parameters).ExecuteScalar();
+
+                return scalar;
+            }
+        }
+
+        private int ExecuteNonQuery(string procedure, params KeyValuePair<string, object>[] parameters)
+        {
+            using (var _connection = new SqlConnection(_connectionString))
+            {
+                _connection.Open();
+
+                var result = GetCommand(_connection, procedure, parameters).ExecuteNonQuery();
+
+                return result;
+            }
+        }
+
+        private SqlCommand GetCommand(SqlConnection _connection, string procedure, params KeyValuePair<string, object>[] parameters)
+        {
+            var command = new SqlCommand(procedure, _connection)
+            {
+                CommandType = System.Data.CommandType.StoredProcedure
+            };
+
+            foreach (var param in parameters)
+            {
+                command.Parameters.AddWithValue(param.Key, param.Value);
+            }
+            return command;
+        }
+        #endregion
         public string[] GetRolesForUser(string login)
         {
             var roles = new LinkedList<string>();
@@ -280,59 +335,55 @@ namespace Album.DAL.MSSQL
             return (int)sqlData > 0;
         }
 
-        #region HELPERS
-        private IEnumerable<SqlDataReader> ExecuteReader(string procedure, params KeyValuePair<string, object>[] parameters)
+        public bool InsertPhoto(Photo photo)
         {
-            using (var _connection = new SqlConnection(_connectionString))
+            string stProc = "Album_InsertPhoto";
+            var param = new KeyValuePair<string, object>[]
             {
-                _connection.Open();
-
-                var reader = GetCommand(_connection, procedure, parameters).ExecuteReader();
-
-                while (reader.Read())
-                {
-                    yield return reader;
-                }
-            }
-        }
-
-        private object ExecuteScalar(string procedure, params KeyValuePair<string, object>[] parameters)
-        {
-            using (var _connection = new SqlConnection(_connectionString))
-            {
-                _connection.Open();
-
-                var scalar = GetCommand(_connection, procedure, parameters).ExecuteScalar();
-
-                return scalar;
-            }
-        }
-
-        private int ExecuteNonQuery(string procedure, params KeyValuePair<string, object>[] parameters)
-        {
-            using (var _connection = new SqlConnection(_connectionString))
-            {
-                _connection.Open();
-
-                var result = GetCommand(_connection, procedure, parameters).ExecuteNonQuery();
-
-                return result;
-            }
-        }
-
-        private SqlCommand GetCommand(SqlConnection _connection, string procedure, params KeyValuePair<string, object>[] parameters)
-        {
-            var command = new SqlCommand(procedure, _connection)
-            {
-                CommandType = System.Data.CommandType.StoredProcedure
+                new KeyValuePair<string, object>("@FileName", photo.FileName),
+                new KeyValuePair<string, object>("@UserId", photo.UserId)
             };
-
-            foreach (var param in parameters)
-            {
-                command.Parameters.AddWithValue(param.Key, param.Value);
-            }
-            return command;
+            return ExecuteNonQuery(stProc, param) > 0;
         }
-        #endregion
+
+        public bool DeletePhotoById(Guid id)
+        {
+            string stProc = "Album_DeletePhotoById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", id)
+            };
+            return ExecuteNonQuery(stProc, param) > 0;
+        }
+
+        public bool DeleteTagById(Guid id)
+        {
+            string stProc = "Album_DeleteTagById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", id)
+            };
+            return ExecuteNonQuery(stProc, param) > 0;
+        }
+
+        public bool DeleteRegardById(Guid id)
+        {
+            string stProc = "Album_DeleteRegardById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", id)
+            };
+            return ExecuteNonQuery(stProc, param) > 0;
+        }
+
+        public bool DeleteCommentById(Guid id)
+        {
+            string stProc = "Album_DeleteCommentById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", id)
+            };
+            return ExecuteNonQuery(stProc, param) > 0;
+        }
     }
 }

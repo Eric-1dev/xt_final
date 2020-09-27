@@ -82,5 +82,21 @@ namespace Album.BLL
         public bool RemoveUserById(Guid id) => DAL.DeleteUserById(id);
 
         public IEnumerable<Photo> GetPhotosByUserId(Guid userId) => DAL.GetPhotosByUserId(userId);
+
+        public bool AddPhoto(Photo photo) => DAL.InsertPhoto(photo);
+
+        public bool AddComment(Comment comment) => DAL.InsertComment(comment);
+
+        public bool AddRegard(Regard regard) => DAL.InsertRegard(regard);
+
+        public bool AddTagToPhoto(Guid photoId, Guid tagId) => DAL.AddTagToPhoto(photoId, tagId);
+
+        public bool DeleteTagFromPhoto(Guid photoId, Guid tagId) => DAL.DeleteTagFromPhoto(photoId, tagId);
+
+        public bool DeletePhotoById(Guid id) => DAL.DeletePhotoById(id);
+
+        public bool DeleteCommentById(Guid id) => DAL.DeleteCommentById(id);
+
+        public bool DeleteRegardById(Guid id) => DAL.DeleteRegardById(id);
     }
 }

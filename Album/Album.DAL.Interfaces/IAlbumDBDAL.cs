@@ -11,9 +11,14 @@ namespace Album.DAL.Interfaces
     {
         bool InsertUser(User user);
         bool DeleteUserById(Guid id);
+        bool InsertPhoto(Photo photo);
+        bool DeletePhotoById(Guid id);
         bool InsertTag(Tag tag);
+        bool DeleteTagById(Guid id);
         bool InsertRegard(Regard regard);
+        bool DeleteRegardById(Guid id);
         bool InsertComment(Comment comment);
+        bool DeleteCommentById(Guid id);
         bool UpdateUserById(Guid id, User user);
         bool AddTagToPhoto(Guid photoId, Guid tagId);
         bool DeleteTagFromPhoto(Guid photoId, Guid tagId);

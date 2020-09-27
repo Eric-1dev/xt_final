@@ -36,5 +36,21 @@ namespace Album.PL.Web.Models
         public bool RemoveUserById(Guid id) => BLL.RemoveUserById(id);
 
         public IEnumerable<Photo> GetPhotosByUserId(Guid userId) => BLL.GetPhotosByUserId(userId);
+
+        public bool AddPhoto(Photo photo) => BLL.AddPhoto(photo);
+
+        public bool AddComment(Comment comment) => BLL.AddComment(comment);
+
+        public bool AddRegard(Regard regard) => BLL.AddRegard(regard);
+
+        public bool AddTagToPhoto(Guid photoId, Guid tagId) => BLL.AddTagToPhoto(photoId, tagId);
+
+        public bool DeleteTagFromPhoto(Guid photoId, Guid tagId) => BLL.DeleteTagFromPhoto(photoId, tagId);
+
+        public bool DeletePhotoById(Guid id) => BLL.DeletePhotoById(id);
+
+        public bool DeleteCommentById(Guid id) => BLL.DeleteCommentById(id);
+
+        public bool DeleteRegardById(Guid id) => BLL.DeleteRegardById(id);
     }
 }

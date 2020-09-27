@@ -77,6 +77,7 @@ function UpdateMyInfo() {
         function (data) {
             $('#main_my_info').html(data);
             $('.btn_user_edit').click(UserEdit);
+            $('#btn_add_photo').click(EditPhoto);
         });
 }
 
@@ -91,70 +92,50 @@ function UpdateUsersList() {
 
 function UploadAvatar() {
     if (this.files && this.files[0]) {
+        let file = this.files[0];
         let max_width = $('#modal_div_image').width();
         let max_height = $('#modal_div_image').height();
 
-        let reader = new FileReader();
-
-        reader.readAsDataURL(this.files[0]);
-        reader.onload = function (event) {
-            let img = new Image(); // Масштабируем
-
-            img.src = event.target.result;
-            img.onload = () => {
-                // Масштабируем под новые размеры, сохраняя пропорции
-                let scaleFactor = img.height / img.width;
-                let new_width = max_width;
-                let new_height = new_width * scaleFactor;
-                if (new_height > max_height) {
-                    new_height = max_height;
-                    new_width = new_height / scaleFactor;
-                }
-                /////////////////////////////////////////////////////
-                let elem = document.createElement('canvas');
-                elem.width = new_width;
-                elem.height = new_height;
-                let ctx = elem.getContext('2d');
-
-                ctx.drawImage(img, 0, 0, new_width, new_height);
-
-                $('#modal_user_image').attr('src', elem.toDataURL());
-            }
-        }
+        PhotoPreview(file, max_width, max_height, $('#modal_user_image'));
     }
 }
 
 function UploadPhoto() {
     if (this.files && this.files[0]) {
+        let file = this.files[0];
         let max_width = parseInt($('#photo_div_image').css('max-width'));
         let max_height = parseInt($('#photo_div_image').css('max-height'));
 
-        let reader = new FileReader();
+        PhotoPreview(file, max_width, max_height, $('#modal_photo_image'));
+    }
+}
 
-        reader.readAsDataURL(this.files[0]);
-        reader.onload = function (event) {
-            let img = new Image(); // Масштабируем
+function PhotoPreview(file, max_width, max_height, container) {
+    let reader = new FileReader();
 
-            img.src = event.target.result;
-            img.onload = () => {
-                // Масштабируем под новые размеры, сохраняя пропорции
-                let scaleFactor = img.height / img.width;
-                let new_width = max_width;
-                let new_height = new_width * scaleFactor;
-                if (new_height > max_height) {
-                    new_height = max_height;
-                    new_width = new_height / scaleFactor;
-                }
-                /////////////////////////////////////////////////////
-                let elem = document.createElement('canvas');
-                elem.width = new_width;
-                elem.height = new_height;
-                let ctx = elem.getContext('2d');
+    reader.readAsDataURL(file);
+    reader.onload = function (event) {
+        let img = new Image(); // Масштабируем
 
-                ctx.drawImage(img, 0, 0, new_width, new_height);
-
-                $('#modal_photo_image').attr('src', elem.toDataURL());
+        img.src = event.target.result;
+        img.onload = () => {
+            // Масштабируем под новые размеры, сохраняя пропорции
+            let scaleFactor = img.height / img.width;
+            let new_width = max_width;
+            let new_height = new_width * scaleFactor;
+            if (new_height > max_height) {
+                new_height = max_height;
+                new_width = new_height / scaleFactor;
             }
+            /////////////////////////////////////////////////////
+            let elem = document.createElement('canvas');
+            elem.width = new_width;
+            elem.height = new_height;
+            let ctx = elem.getContext('2d');
+
+            ctx.drawImage(img, 0, 0, new_width, new_height);
+
+            container.attr('src', elem.toDataURL());
         }
     }
 }

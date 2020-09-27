@@ -11,6 +11,14 @@ namespace Album.PL.Interfaces
     public interface IAlbumPL
     {
         UserCheckStatus AddUser(User user);
+        bool AddPhoto(Photo photo);
+        bool DeletePhotoById(Guid id);
+        bool AddTagToPhoto(Guid photoId, Guid tagId);
+        bool DeleteTagFromPhoto(Guid photoId, Guid tagId);
+        bool AddComment(Comment comment);
+        bool DeleteCommentById(Guid id);
+        bool AddRegard(Regard regard);
+        bool DeleteRegardById(Guid id);
         void SetUserPassword(Guid userId, string password);
         User GetUserByLogin(string login);
         User GetUserById(Guid id);

@@ -11,6 +11,14 @@ namespace Album.BLL.Interfaces
     public interface IAlbumBLL
     {
         UserCheckStatus AddUser(User user);
+        bool AddPhoto(Photo photo);
+        bool DeletePhotoById(Guid id);
+        bool AddTagToPhoto(Guid photoId, Guid tagId);
+        bool DeleteTagFromPhoto(Guid photoId, Guid tagId);
+        bool AddComment(Comment comment);
+        bool DeleteCommentById(Guid id);
+        bool AddRegard(Regard regard);
+        bool DeleteRegardById(Guid id);
         User GetUserById(Guid id);
         User GetUserByLogin(string login);
         bool AddUserToAdmins(Guid userId);
