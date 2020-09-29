@@ -125,5 +125,13 @@ namespace Album.BLL
                 DAL.InsertPhoto(photo);
             
         }
+
+        public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId) => DAL.GetTagsByPhotoId(photoId);
+
+        public IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId) => DAL.GetCommentsByPhotoId(photoId);
+
+        public int GetAvgRatingByPhotoId(Guid photoId) => DAL.GetAvgRatingByPhotoId(photoId);
+
+        public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin) => DAL.GetRatingByPhotoIdUserLogin(photoId, userLogin);
     }
 }

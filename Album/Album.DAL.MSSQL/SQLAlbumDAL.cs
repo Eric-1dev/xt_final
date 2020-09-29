@@ -409,5 +409,78 @@ namespace Album.DAL.MSSQL
 
             return photos;
         }
+
+        public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId)
+        {
+            string stProc = "Album_GetTagsByPhotoId";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@PhotoId", photoId)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var tags = new LinkedList<Tag>();
+
+            foreach (var item in sqlData)
+            {
+                var tag = new Tag
+                {
+                    Id = (Guid)item["Id"],
+                    TagName = item["TagName"].ToString(),
+                };
+
+                tags.AddLast(tag);
+            }
+
+            return tags;
+        }
+
+        public IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId)
+        {
+            string stProc = "Album_GetCommentsByPhotoId";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@PhotoId", photoId)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var comments = new LinkedList<Comment>();
+
+            foreach (var item in sqlData)
+            {
+                var comment = new Comment
+                {
+                    Id = (Guid)item["Id"],
+                    AuthorId = (Guid)item["AuthorId"],
+                    PhotoId = (Guid)item["PhotoId"],
+                    Text = item["Text"].ToString()
+                };
+
+                comments.AddLast(comment);
+            }
+
+            return comments;
+        }
+
+        public int GetAvgRatingByPhotoId(Guid photoId)
+        {
+            string stProc = "Album_GetAvgRatingByPhotoId";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@PhotoId", photoId)
+            };
+            var sqlData = ExecuteScalar(stProc, param);
+            return (int)sqlData;
+        }
+
+        public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin)
+        {
+            string stProc = "Album_GetRatingByPhotoIdUserLogin";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@PhotoId", photoId),
+                new KeyValuePair<string, object>("@UserLogin", userLogin)
+            };
+            var sqlData = ExecuteScalar(stProc, param);
+            return (int)sqlData;
+        }
     }
 }

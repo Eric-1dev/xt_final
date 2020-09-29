@@ -52,6 +52,10 @@
         foreach (var photo in photos)
         {
             i++;
+            var tags = WebPL.GetTagsByPhotoId(photo.Id);
+            var comments = WebPL.GetCommentsByPhotoId(photo.Id);
+            int avgRating = WebPL.GetAvgRatingByPhotoId(photo.Id);
+            int myRating = WebPL.GetRatingByPhotoIdUserLogin(photo.Id, User.Identity.Name);
             <text>
                 <!-- Grid column -->
                 <div class="col-lg-4 col-md-12 mb-4">
@@ -68,13 +72,31 @@
                                     <div class="row p-2">
                                         <div class="col-8">
                                             <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                                <img class="embed-responsive-item" src="/Images/Photos/@photo.FileName" />
+                                                <img class="embed-responsive-item" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
+                                            </div>
+                                            <div>
+                                                <h4 class="text-muted">Фото пользователя @WebPL.GetUserById(photo.UserId).Name</h4>
+                                                <small>Теги:</small>
+                                                @foreach (var tag in tags)
+                                                {
+                                                    <text>
+                                                        <div class="photo_tag"><small>@tag.TagName</small></div>
+                                                    </text>
+                                                }
                                             </div>
                                         </div>
                                         <div class="col-4 comments">
                                             <div class="comments_header"><h4 class="text-muted text-center">Комментарии:</h4></div>
                                             <div class="comments_list">
-                                                <div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div>
+                                                @foreach (var comment in comments)
+                                                {
+                                                    <text>
+                                                        <div class="photo_comment">
+                                                            <div class="photo_comment_header">@WebPL.GetUserById(comment.AuthorId).Name</div>
+                                                            <div class="photo_comment_text">@comment.Text</div>
+                                                        </div>
+                                                    </text>
+                                                }
                                             </div>
                                             <div class="add_comment_wrapper">
                                                 <div class="comment_area_wrapper">

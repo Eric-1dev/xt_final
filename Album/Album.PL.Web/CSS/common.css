@@ -105,3 +105,16 @@ textarea, select, input, button {
     max-width: 90%;
     max-height: 90%;
 }
+
+.photo_comment {
+    border: 1px 0 solid #f3f3f3;
+    padding: 5px;
+}
+
+.photo_comment_header {
+
+}
+
+.photo_comment_text {
+
+}

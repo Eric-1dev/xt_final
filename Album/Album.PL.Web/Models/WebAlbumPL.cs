@@ -57,5 +57,13 @@ namespace Album.PL.Web.Models
         public IEnumerable<Photo> GetMostPopularPhotos() => BLL.GetMostPopularPhotos();
 
         public void SavePhoto(Stream file, string origName, Guid userId) => BLL.SaveFile(file, origName, userId);
+
+        public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId) => BLL.GetTagsByPhotoId(photoId);
+
+        public IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId) => BLL.GetCommentsByPhotoId(photoId);
+
+        public int GetAvgRatingByPhotoId(Guid photoId) => BLL.GetAvgRatingByPhotoId(photoId);
+
+        public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin) => BLL.GetRatingByPhotoIdUserLogin(photoId, userLogin);
     }
 }

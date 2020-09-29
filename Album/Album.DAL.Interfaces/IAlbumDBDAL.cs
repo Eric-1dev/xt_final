@@ -33,5 +33,9 @@ namespace Album.DAL.Interfaces
         bool SetUserPassword(Guid userId, string password);
         bool IsAccountExist(string login, string password);
         bool IsUserActive(string login);
+        IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
+        IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
+        int GetAvgRatingByPhotoId(Guid photoId);
+        int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
     }
 }

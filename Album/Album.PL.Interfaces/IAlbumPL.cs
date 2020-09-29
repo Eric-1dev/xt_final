@@ -33,5 +33,9 @@ namespace Album.PL.Interfaces
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         IEnumerable<Photo> GetMostPopularPhotos();
         void SavePhoto(Stream file, string origName, Guid userId);
+        IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
+        IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
+        int GetAvgRatingByPhotoId(Guid photoId);
+        int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
     }
 }
