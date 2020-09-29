@@ -12,12 +12,18 @@
                 <input type="file" id="photo_file" class="modal_file" accept="image/png, image/jpeg" hidden />
                 <div class="row photo_row">
                     <div class="col text-center">
-                        <div id="photo_div_image"><img id="modal_photo_image" /></div>
                         <div><label for="photo_file" class="change_img btn btn-success" id="btn_modal_add_photo">Добавить фото</label></div>
-                    </div>
-                </div>
-                <div class="row photo_tag_row">
+                        <div id="photo_div_image"><img id="modal_photo_image" /></div>
 
+                        <h5 class="text-muted">Добавьте теги, чтобы ваше фото было проще найти</h5>
+                        <div class="photo_tag_row">
+                            <div id="input_tag_wrapper">
+                                <input class="photo_modal_tag_name small" id="input_tag" type="text" maxlength="20" placeholder="Введите тег" autocomplete="off" />
+                                <div id="tags_dropdown">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

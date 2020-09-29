@@ -39,5 +39,7 @@ namespace Album.BLL.Interfaces
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
         int GetAvgRatingByPhotoId(Guid photoId);
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
+        IEnumerable<Tag> GetTagsStartingAt(string subString);
+        IEnumerable<Tag> GetTagsContainString(string subString);
     }
 }

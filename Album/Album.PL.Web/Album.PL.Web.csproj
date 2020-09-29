@@ -143,6 +143,7 @@
     <Content Include="Pages\userDelete.cshtml" />
     <Content Include="Pages\_photoEditModal.cshtml" />
     <Content Include="Pages\photoSave.cshtml" />
+    <Content Include="Pages\getTags.cshtml" />
     <None Include="Scripts\jquery-3.5.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.1.js" />
     <Content Include="Scripts\jquery-3.5.1.min.js" />

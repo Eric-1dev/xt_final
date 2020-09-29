@@ -71,11 +71,11 @@
                                 <div class="modal-body">
                                     <div class="row p-2">
                                         <div class="col-8">
+                                            <h4 class="text-muted text-center">Фото пользователя @WebPL.GetUserById(photo.UserId).Name</h4>
                                             <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
                                                 <img class="embed-responsive-item" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
                                             </div>
                                             <div>
-                                                <h4 class="text-muted">Фото пользователя @WebPL.GetUserById(photo.UserId).Name</h4>
                                                 <small>Теги:</small>
                                                 @foreach (var tag in tags)
                                                 {
@@ -125,6 +125,15 @@
                     <!--Modal: Name-->
 
                     <a>
+                        @if (canEdit)
+                        {
+                            <text>
+                                <div class="photo_edit_delete_btn">
+                                    <div class="photo_edit_btn"><img src="~/Images/edit.png" /></div>
+                                    <div class="photo_delete_btn"><img src="~/Images/delete.png" /></div>
+                                </div>
+                            </text>
+                        }
                         <img class="img-fluid z-depth-1" src="/Images/Photos/@photo.FileName" alt="Фотография"
                              data-toggle="modal" data-target="#main_photo_@i.ToString()">
                     </a>

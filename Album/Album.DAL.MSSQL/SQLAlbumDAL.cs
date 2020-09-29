@@ -468,7 +468,10 @@ namespace Album.DAL.MSSQL
                 new KeyValuePair<string, object>("@PhotoId", photoId)
             };
             var sqlData = ExecuteScalar(stProc, param);
-            return (int)sqlData;
+            int rating = 0;
+            if (sqlData != null)
+                int.TryParse(sqlData.ToString(), out rating);
+            return rating;
         }
 
         public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin)
@@ -480,7 +483,58 @@ namespace Album.DAL.MSSQL
                 new KeyValuePair<string, object>("@UserLogin", userLogin)
             };
             var sqlData = ExecuteScalar(stProc, param);
-            return (int)sqlData;
+            int rating = 0;
+            if ( sqlData != null )
+                int.TryParse(sqlData.ToString(), out rating);
+            return rating;
+        }
+
+        public IEnumerable<Tag> GetTagsStartingAt(string subString)
+        {
+            string stProc = "Album_GetTagsStartingAt";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@SubString", subString)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var tags = new LinkedList<Tag>();
+
+            foreach (var item in sqlData)
+            {
+                var tag = new Tag
+                {
+                    Id = (Guid)item["Id"],
+                    TagName = item["TagName"].ToString()
+                };
+
+                tags.AddLast(tag);
+            }
+
+            return tags;
+        }
+
+        public IEnumerable<Tag> GetTagsContainString(string subString)
+        {
+            string stProc = "Album_GetTagsContainString";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@SubString", subString)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var tags = new LinkedList<Tag>();
+
+            foreach (var item in sqlData)
+            {
+                var tag = new Tag
+                {
+                    Id = (Guid)item["Id"],
+                    TagName = item["TagName"].ToString()
+                };
+
+                tags.AddLast(tag);
+            }
+
+            return tags;
         }
     }
 }

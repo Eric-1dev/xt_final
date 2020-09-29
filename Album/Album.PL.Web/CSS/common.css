@@ -106,15 +106,38 @@ textarea, select, input, button {
     max-height: 90%;
 }
 
-.photo_comment {
-    border: 1px 0 solid #f3f3f3;
-    padding: 5px;
+.photo_edit_delete_btn {
+    position: absolute;
+    top: 0;
+    right: 15px;
 }
 
-.photo_comment_header {
+    .photo_edit_delete_btn > div {
+        display: inline-block;
+        cursor: pointer;
+    }
 
+.photo_tag_row {
+    margin-top: 10px;
 }
 
-.photo_comment_text {
+#input_tag_wrapper {
+    width: 10em;
+}
 
+#input_tag_wrapper > * {
+    width: 100%;
+}
+
+#tags_dropdown {
+    position: absolute;
+    width: inherit;
+    text-align: center;
+    
+}
+
+.tag {
+    background-color: #f0f9ff;
+    cursor: pointer;
+    user-select: none;
 }

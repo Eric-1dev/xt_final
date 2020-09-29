@@ -1,0 +1,41 @@
+﻿@using Album.PL.Web.Models
+@using Album.Entities
+@{
+    var WebPL = new WebAlbumPL();
+
+    string subString = Request["SubString"];
+
+    IEnumerable<Tag> tags = null;
+
+    if (subString != null)
+    {
+        if (subString.Length > 0 && subString.Length < 3)
+        {
+            tags = WebPL.GetTagsStartingAt(subString);
+        }
+        else if (subString.Length >= 3)
+        {
+            tags = WebPL.GetTagsContainString(subString);
+        }
+        else if (subString.Length < 1)
+        {
+            Response.Write("");
+            return;
+        }
+        else
+        {
+            Response.Write("");
+            return;
+        }
+    }
+}
+
+@if (tags != null)
+{
+    foreach (var tag in tags)
+    {
+        <text>
+            <div class="tag text-muted">@tag.TagName</div>
+        </text>
+    }
+}

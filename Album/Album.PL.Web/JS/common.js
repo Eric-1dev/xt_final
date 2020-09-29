@@ -18,6 +18,9 @@ function Ready() {
     $('#btn_add_photo').click(EditPhoto);
     $('#photo_file').change(UploadPhoto);
     $('#photo_save').click(PhotoSave);
+
+    $('#input_tag').keyup(TagFind);
+    $('#tags_dropdown').click(TagOnSelect);
 }
 
 function ShowMessage(data) {
@@ -248,4 +251,33 @@ function PhotoSave(event, photoId = null) {
             }
         }
     });
+}
+
+function TagFind(event) {
+    let subString = $('#input_tag').val();
+
+    if (event.key === 'Enter' || event.keyCode === 13) {
+        AddTag(subString);
+        return;
+    }
+
+    $.post("/Pages/getTags.cshtml",
+        { SubString: subString },
+        function (data) {
+            $('#tags_dropdown').html(data);
+        });
+}
+
+function TagOnSelect(event) {
+    if ($(event.target).hasClass('tag')) {
+        $('#input_tag').val("");
+        $('#tags_dropdown').html("");
+
+        AddTag($(event.target).html(), $(event.target).id);
+    }
+}
+
+function AddTag(name) {
+    // TODO Add tag to list
+    console.log(name);
 }

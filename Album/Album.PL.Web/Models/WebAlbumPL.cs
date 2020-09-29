@@ -65,5 +65,9 @@ namespace Album.PL.Web.Models
         public int GetAvgRatingByPhotoId(Guid photoId) => BLL.GetAvgRatingByPhotoId(photoId);
 
         public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin) => BLL.GetRatingByPhotoIdUserLogin(photoId, userLogin);
+
+        public IEnumerable<Tag> GetTagsStartingAt(string subString) => BLL.GetTagsStartingAt(subString);
+
+        public IEnumerable<Tag> GetTagsContainString(string subString) => BLL.GetTagsContainString(subString);
     }
 }

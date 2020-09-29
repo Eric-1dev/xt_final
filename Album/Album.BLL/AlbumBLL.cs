@@ -133,5 +133,9 @@ namespace Album.BLL
         public int GetAvgRatingByPhotoId(Guid photoId) => DAL.GetAvgRatingByPhotoId(photoId);
 
         public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin) => DAL.GetRatingByPhotoIdUserLogin(photoId, userLogin);
+
+        public IEnumerable<Tag> GetTagsStartingAt(string subString) => DAL.GetTagsStartingAt(subString);
+
+        public IEnumerable<Tag> GetTagsContainString(string subString) => DAL.GetTagsContainString(subString);
     }
 }
