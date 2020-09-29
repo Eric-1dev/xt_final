@@ -6,8 +6,16 @@
     padding: 10px;
 }
 
+textarea, select, input, button {
+    outline: none;
+}
+
 .container-fluid {
     flex: 1;
+}
+
+.btn {
+    margin: 1px;
 }
 
 #user_info_wrapper, #users_list_wrapper {
@@ -83,10 +91,6 @@
     margin: auto;
 }
 
-.btn {
-    margin: 1px;
-}
-
 #photo_div_image {
     max-width: 100%;
     max-height: 100%;
@@ -95,4 +99,9 @@
 #modal_photo_image {
     max-width: 100%;
     max-height: 100%;
+}
+
+.photo_viewer_modal {
+    max-width: 90%;
+    max-height: 90%;
 }

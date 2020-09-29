@@ -18,5 +18,18 @@ namespace Album.DAL.File
                 return true;
             }
         }
+
+        public bool DeleteFile(string fullPath)
+        {
+            try
+            {
+                System.IO.File.Delete(fullPath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("Cannot delete file", ex);
+            }
+        }
     }
 }

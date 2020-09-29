@@ -10,5 +10,6 @@ namespace Album.DAL.Interfaces
     public interface IAlbumDataDAL
     {
         bool SaveFile(Stream fs, string fullPath);
+        bool DeleteFile(string fullPath);
     }
 }

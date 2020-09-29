@@ -332,7 +332,7 @@ namespace Album.DAL.MSSQL
                 new KeyValuePair<string, object>("@Id", userId),
                 new KeyValuePair<string, object>("@Password", password)
             };
-            var sqlData = ExecuteScalar(stProc, param);
+            var sqlData = ExecuteNonQuery(stProc, param);
             return (int)sqlData > 0;
         }
 

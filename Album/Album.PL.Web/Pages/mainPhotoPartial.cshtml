@@ -48,26 +48,44 @@
 
     if (photos.Count() != 0)
     {
+        int i = 0;
         foreach (var photo in photos)
         {
+            i++;
             <text>
                 <!-- Grid column -->
                 <div class="col-lg-4 col-md-12 mb-4">
 
                     <!--Modal: Name-->
-                    <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal fade" id="main_photo_@i.ToString()" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg photo_viewer_modal" role="document">
 
                             <!--Content-->
                             <div class="modal-content">
 
                                 <!--Body-->
-                                <div class="modal-body mb-0 p-0">
-
-                                    <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                        <img class="embed-responsive-item" src="/Images/Photos/@photo.FileName" />
+                                <div class="modal-body">
+                                    <div class="row p-2">
+                                        <div class="col-8">
+                                            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                                <img class="embed-responsive-item" src="/Images/Photos/@photo.FileName" />
+                                            </div>
+                                        </div>
+                                        <div class="col-4 comments">
+                                            <div class="comments_header"><h4 class="text-muted text-center">Комментарии:</h4></div>
+                                            <div class="comments_list">
+                                                <div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div><div>s</div>
+                                            </div>
+                                            <div class="add_comment_wrapper">
+                                                <div class="comment_area_wrapper">
+                                                    <textarea class="add_comment_text" placeholder="А что вы думаете по этому поводу?"></textarea>
+                                                </div>
+                                                <div class="btn_comment_wrapper">
+                                                    <button class="btn btn-sm btn-success btn_add_comment">Отправить</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
 
                                 <!--Footer-->
@@ -86,7 +104,7 @@
 
                     <a>
                         <img class="img-fluid z-depth-1" src="/Images/Photos/@photo.FileName" alt="Фотография"
-                             data-toggle="modal" data-target="#modal2">
+                             data-toggle="modal" data-target="#main_photo_@i.ToString()">
                     </a>
 
                 </div>
@@ -97,7 +115,7 @@
     else
     {
         <text>
-            <h4 class="text-dark">@placeholder</h4>
+            <h4 class="text-dark text-center">@placeholder</h4>
         </text>
     }
 }
