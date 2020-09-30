@@ -54,3 +54,18 @@
 
 .photo_comment_text {
 }
+
+.photo_viewer_taglist {
+    display: flex;
+    float: left;
+}
+
+.photo_tag {
+    margin: 2px 5px;
+    padding: 1px 3px;
+    border-radius: 3px;
+    border: 1px solid #9fbeff;
+    color: #3d47ff;
+    float: left;
+    display: flex;
+}

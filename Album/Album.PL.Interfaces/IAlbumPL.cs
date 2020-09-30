@@ -14,8 +14,6 @@ namespace Album.PL.Interfaces
         UserCheckStatus AddUser(User user);
         bool AddPhoto(Photo photo);
         bool DeletePhotoById(Guid id);
-        bool AddTagToPhoto(Guid photoId, Guid tagId);
-        bool DeleteTagFromPhoto(Guid photoId, Guid tagId);
         bool AddComment(Comment comment);
         bool DeleteCommentById(Guid id);
         bool AddRegard(Regard regard);
@@ -32,7 +30,7 @@ namespace Album.PL.Interfaces
         bool RemoveUserById(Guid id);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         IEnumerable<Photo> GetMostPopularPhotos();
-        void SavePhoto(Stream file, string origName, Guid userId);
+        Guid SavePhoto(Stream file, string origName, Guid userId);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
         int GetAvgRatingByPhotoId(Guid photoId);

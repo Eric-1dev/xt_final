@@ -18,6 +18,10 @@ textarea, select, input, button {
     margin: 1px;
 }
 
+#confirm_delete {
+    z-index: 9999;
+}
+
 #user_info_wrapper, #users_list_wrapper {
     border-radius: 4px;
     padding: 10px 2px;
@@ -106,23 +110,21 @@ textarea, select, input, button {
     max-height: 90%;
 }
 
-.photo_edit_delete_btn {
+.photo_edit_btn {
     position: absolute;
     top: 0;
     right: 15px;
+    cursor: pointer;
 }
 
-    .photo_edit_delete_btn > div {
-        display: inline-block;
-        cursor: pointer;
-    }
-
-.photo_tag_row {
+#photo_tag_row {
     margin-top: 10px;
 }
 
 #input_tag_wrapper {
     width: 10em;
+    float: left;
+    margin: 2px;
 }
 
 #input_tag_wrapper > * {
@@ -136,8 +138,27 @@ textarea, select, input, button {
     
 }
 
-.tag {
+.tag_to_select {
     background-color: #f0f9ff;
     cursor: pointer;
     user-select: none;
+}
+
+.photo_tag_row {
+    float: left;
+}
+
+.tag_wrapper {
+    margin: 2px 5px;
+    padding: 1px 3px;
+    border-radius: 3px;
+    border: 1px solid #9fbeff;
+    color: #3d47ff;
+    float: left;
+    display: flex;
+}
+
+.tag_delete {
+    cursor: pointer;
+    padding: 0 0 0 5px;
 }

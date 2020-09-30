@@ -14,8 +14,9 @@ namespace Album.BLL.Interfaces
         UserCheckStatus AddUser(User user);
         bool AddPhoto(Photo photo);
         bool DeletePhotoById(Guid id);
-        bool AddTagToPhoto(Guid photoId, Guid tagId);
-        bool DeleteTagFromPhoto(Guid photoId, Guid tagId);
+        void SetTagsToPhoto(Guid photoId, string[] tagsNames);
+        bool AddTagToPhoto(Guid photoId, string tagName);
+        bool DeleteTagFromPhoto(Guid photoId, string tagName);
         bool AddComment(Comment comment);
         bool DeleteCommentById(Guid id);
         bool AddRegard(Regard regard);
@@ -34,7 +35,7 @@ namespace Album.BLL.Interfaces
         UserCheckStatus UserCorrectionCheck(User user);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         IEnumerable<Photo> GetMostPopularPhotos();
-        void SaveFile(Stream file, string extension, Guid userId);
+        Guid SaveFile(Stream file, string extension, Guid userId);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
         int GetAvgRatingByPhotoId(Guid photoId);

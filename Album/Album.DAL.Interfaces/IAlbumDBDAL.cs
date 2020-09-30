@@ -39,5 +39,7 @@ namespace Album.DAL.Interfaces
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);
+        Tag GetTagByName(string tagName);
+        bool IsTagInUse(Guid tagId);
     }
 }

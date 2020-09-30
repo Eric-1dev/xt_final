@@ -272,7 +272,8 @@ namespace Album.DAL.MSSQL
             string stProc = "Album_InsertTag";
             var param = new KeyValuePair<string, object>[]
             {
-                new KeyValuePair<string, object>("@TagName", tag.TagName),
+                new KeyValuePair<string, object>("@Id", tag.Id),
+                new KeyValuePair<string, object>("@TagName", tag.TagName)
             };
             return ExecuteNonQuery(stProc, param) > 0;
         }
@@ -535,6 +536,44 @@ namespace Album.DAL.MSSQL
             }
 
             return tags;
+        }
+
+        public Tag GetTagByName(string tagName)
+        {
+            string stProc = "Album_GetTagByName";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@TagName", tagName)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var tags = new LinkedList<Tag>();
+
+            foreach (var item in sqlData)
+            {
+                var tag = new Tag
+                {
+                    Id = (Guid)item["Id"],
+                    TagName = item["TagName"].ToString()
+                };
+
+                tags.AddLast(tag);
+            }
+
+            return tags.FirstOrDefault();
+        }
+
+        public bool IsTagInUse(Guid tagId)
+        {
+            string stProc = "Album_IsTagInUse";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", tagId)
+            };
+            var sqlData = ExecuteScalar(stProc, param);
+            int count = 0;
+            if (sqlData != null)
+                int.TryParse(sqlData.ToString(), out count);
+            return count > 0;
         }
     }
 }

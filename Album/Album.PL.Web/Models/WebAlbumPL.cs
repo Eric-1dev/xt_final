@@ -44,9 +44,7 @@ namespace Album.PL.Web.Models
 
         public bool AddRegard(Regard regard) => BLL.AddRegard(regard);
 
-        public bool AddTagToPhoto(Guid photoId, Guid tagId) => BLL.AddTagToPhoto(photoId, tagId);
-
-        public bool DeleteTagFromPhoto(Guid photoId, Guid tagId) => BLL.DeleteTagFromPhoto(photoId, tagId);
+        public void SetTagsToPhoto(Guid photoId, string[] tagsNames) => BLL.SetTagsToPhoto(photoId, tagsNames);
 
         public bool DeletePhotoById(Guid id) => BLL.DeletePhotoById(id);
 
@@ -56,7 +54,7 @@ namespace Album.PL.Web.Models
 
         public IEnumerable<Photo> GetMostPopularPhotos() => BLL.GetMostPopularPhotos();
 
-        public void SavePhoto(Stream file, string origName, Guid userId) => BLL.SaveFile(file, origName, userId);
+        public Guid SavePhoto(Stream file, string origName, Guid userId) => BLL.SaveFile(file, origName, userId);
 
         public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId) => BLL.GetTagsByPhotoId(photoId);
 

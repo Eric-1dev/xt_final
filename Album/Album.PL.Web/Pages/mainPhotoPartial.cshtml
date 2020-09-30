@@ -58,7 +58,7 @@
             int myRating = WebPL.GetRatingByPhotoIdUserLogin(photo.Id, User.Identity.Name);
             <text>
                 <!-- Grid column -->
-                <div class="col-lg-4 col-md-12 mb-4">
+                <div class="col-lg-4 col-md-12 mb-4 photo_wrapper">
 
                     <!--Modal: Name-->
                     <div class="modal fade" id="main_photo_@i.ToString()" tabindex="-1" role="dialog" aria-hidden="true">
@@ -75,8 +75,8 @@
                                             <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
                                                 <img class="embed-responsive-item" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
                                             </div>
-                                            <div>
-                                                <small>Теги:</small>
+                                            <div class="photo_viewer_taglist">
+                                                <div><small>Теги:</small></div>
                                                 @foreach (var tag in tags)
                                                 {
                                                     <text>
@@ -128,10 +128,7 @@
                         @if (canEdit)
                         {
                             <text>
-                                <div class="photo_edit_delete_btn">
-                                    <div class="photo_edit_btn"><img src="~/Images/edit.png" /></div>
-                                    <div class="photo_delete_btn"><img src="~/Images/delete.png" /></div>
-                                </div>
+                                <div class="photo_edit_btn"><img src="~/Images/edit.png" /></div>
                             </text>
                         }
                         <img class="img-fluid z-depth-1" src="/Images/Photos/@photo.FileName" alt="Фотография"

@@ -93,19 +93,41 @@ namespace Album.BLL
 
         public bool AddRegard(Regard regard) => DAL.InsertRegard(regard);
 
-        public bool AddTagToPhoto(Guid photoId, Guid tagId)
+        public bool AddTagToPhoto(Guid photoId, string tagName)
         {
-            // TODO add tag if not exist
-            return DAL.AddTagToPhoto(photoId, tagId);
+            var tag = DAL.GetTagByName(tagName);
+            if (tag == null)
+            {
+                tag = new Tag()
+                {
+                    Id = Guid.NewGuid(),
+                    TagName = tagName
+                };
+                DAL.InsertTag(tag);
+            }
+            return DAL.AddTagToPhoto(photoId, tag.Id);
         }
 
-        public bool DeleteTagFromPhoto(Guid photoId, Guid tagId)
+        public bool DeleteTagFromPhoto(Guid photoId, string tagName)
         {
-            // TODO delete tag from DB if it was last using of it
-            return DAL.DeleteTagFromPhoto(photoId, tagId);
+            bool success;
+            var tag = DAL.GetTagByName(tagName);
+            
+            success = DAL.DeleteTagFromPhoto(photoId, tag.Id);
+
+            if (!DAL.IsTagInUse(tag.Id))
+                DAL.DeleteTagById(tag.Id);
+            return success;
         }
 
-        public bool DeletePhotoById(Guid id) => DAL.DeletePhotoById(id);
+        public bool DeletePhotoById(Guid id)
+        {
+            var tags = DAL.GetTagsByPhotoId(id);
+            foreach (var tag in tags)
+                DeleteTagFromPhoto(id, tag.TagName);
+
+            return DAL.DeletePhotoById(id);
+        }
 
         public bool DeleteCommentById(Guid id) => DAL.DeleteCommentById(id);
 
@@ -113,7 +135,7 @@ namespace Album.BLL
 
         public IEnumerable<Photo> GetMostPopularPhotos() => DAL.GetMostPopularPhotos();
 
-        public void SaveFile(Stream file, string extension, Guid userId)
+        public Guid SaveFile(Stream file, string extension, Guid userId)
         {
             var photo = new Photo
             {
@@ -123,7 +145,8 @@ namespace Album.BLL
             photo.FileName = photo.Id.ToString() + extension;
             if (FileDAL.SaveFile(file, fileDirectory + '\\' + photo.FileName))
                 DAL.InsertPhoto(photo);
-            
+
+            return photo.Id;
         }
 
         public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId) => DAL.GetTagsByPhotoId(photoId);
@@ -137,5 +160,20 @@ namespace Album.BLL
         public IEnumerable<Tag> GetTagsStartingAt(string subString) => DAL.GetTagsStartingAt(subString);
 
         public IEnumerable<Tag> GetTagsContainString(string subString) => DAL.GetTagsContainString(subString);
+
+        public void SetTagsToPhoto(Guid photoId, string[] tagsNames)
+        {
+            string[] existingTags = DAL.GetTagsByPhotoId(photoId).Select(tag => tag.TagName).ToArray();
+            var tagsToDelete = existingTags.Except(tagsNames);
+            var tagsToAdd = tagsNames.Except(existingTags);
+            foreach (var tag in tagsToDelete)
+            {
+                DeleteTagFromPhoto(photoId, tag);
+            }
+            foreach (var tag in tagsToAdd)
+            {
+                AddTagToPhoto(photoId, tag);
+            }
+        }
     }
 }

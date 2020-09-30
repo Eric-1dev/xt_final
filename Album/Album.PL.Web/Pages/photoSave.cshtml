@@ -2,14 +2,28 @@
 @{
     var WebPL = new WebAlbumPL();
 
-    if (Request["photoId"] == "null")
+    var tags = new List<string>(Request["tags"].Split(','));
+    tags.ForEach(tag => tag = tag.Trim());
+
+    Guid photoId;
+    Guid.TryParse(Request["photoId"], out photoId);
+
+    if (photoId == Guid.Empty)
     {
         var file = Request.Files["file"];
 
         if (file != null)
         {
-            WebPL.SavePhoto(file.InputStream, Path.GetExtension(file.FileName), WebPL.GetUserByLogin(User.Identity.Name).Id);
-            Response.Write("0");
+            photoId = WebPL.SavePhoto(file.InputStream, Path.GetExtension(file.FileName), WebPL.GetUserByLogin(User.Identity.Name).Id);
+        }
+        else
+        {
+            Response.Write("1");
+            return;
         }
     }
+
+    WebPL.SetTagsToPhoto(photoId, tags.Where(tag => tag != "").ToArray());
+
+    Response.Write("0");
 }

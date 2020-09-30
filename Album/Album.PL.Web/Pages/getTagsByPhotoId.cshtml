@@ -1,0 +1,28 @@
+﻿@using Album.PL.Web.Models
+@using Album.Entities
+@{
+    var WebPL = new WebAlbumPL();
+
+    Guid photoId;
+    Guid.TryParse(Request["photoId"], out photoId);
+
+    IEnumerable<Tag> tags = null;
+
+    if (photoId != Guid.Empty)
+    {
+        tags = WebPL.GetTagsByPhotoId(photoId);
+    }
+}
+
+@if (tags != null)
+{
+    foreach (var tag in tags)
+    {
+        <text>
+            <div class="tag_wrapper">
+                <div class="tag_text">@tag.TagName</div>
+                <div class="tag_delete">&times</div>
+            </div>
+        </text>
+    }
+}

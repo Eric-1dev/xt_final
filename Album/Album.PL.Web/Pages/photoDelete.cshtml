@@ -1,0 +1,33 @@
+﻿@using Album.PL.Web.Models
+@{
+    var WebPL = new WebAlbumPL();
+
+    bool canDelete = false;
+
+    Guid photoId;
+    Guid.TryParse(Request["photoId"], out photoId);
+
+    if (photoId != Guid.Empty)
+    {
+        if (User.IsInRole("admin"))
+        {
+            canDelete = true;
+        }
+        else
+        {
+            var user = WebPL.GetUserByLogin(User.Identity.Name);
+            var photos = WebPL.GetPhotosByUserId(user.Id);
+
+            if (photos.Where(photo => photo.Id == photoId) != null)
+            {
+                canDelete = true;
+            }
+        }
+
+        if (canDelete)
+        {
+            WebPL.DeletePhotoById(photoId);
+        }
+    }
+
+}

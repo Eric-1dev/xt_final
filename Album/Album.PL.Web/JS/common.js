@@ -18,9 +18,11 @@ function Ready() {
     $('#btn_add_photo').click(EditPhoto);
     $('#photo_file').change(UploadPhoto);
     $('#photo_save').click(PhotoSave);
+    $('#photo_delete').click(PhotoDelete);
 
-    $('#input_tag').keyup(TagFind);
+    $('#input_tag').keyup(TagInput);
     $('#tags_dropdown').click(TagOnSelect);
+    AddEventToMainPhoto();
 }
 
 function ShowMessage(data) {
@@ -212,27 +214,59 @@ function ShowPhotos(type, userId = null) {
         },
         function (data) {
             $('#main_photo').html(data);
+            AddEventToMainPhoto();
         });
+}
+
+function AddEventToMainPhoto() {
+    $('.photo_edit_btn').click(function () {
+        let img = $(this).parents('.photo_wrapper').find('.embed-responsive-item');
+        let id = $(img).attr('id');
+        $('#modal_photo_image').attr('src', $(img).attr('src'));
+        EditPhoto(null, id);
+    });
 }
 
 function EditPhoto(event, photoId = null) {
     if (photoId == null) { // Новая фотка
         $('#photo_delete').hide();
         $('#btn_modal_add_photo').show();
+        $('#modal_photo_image').removeAttr('src');
+        $('#btn_modal_add_photo').html('Добавить фото');
+        $('#photo_tag_row').find('.tag_wrapper').remove();
+        $('#input_tag').val('');
+        $('#photo_photo_id').val('');
     }
     else { // Редактирование существующей фотки
         $('#photo_delete').show();
         $('#btn_modal_add_photo').hide();
+        $('#photo_photo_id').val(photoId);
+        $.post("/Pages/getTagsByPhotoId.cshtml",
+            { photoId: photoId },
+            function (data) {
+                $('#photo_tag_row').find('.tag_wrapper').remove();
+                $('#photo_tag_row').append(data);
+                $('.tag_delete').click(function () {
+                    $(this).parent().remove();
+                });
+            });
     }
-    $('#modal_photo_image').removeAttr('src');
-    $('#btn_modal_add_photo').html('Добавить фото');
+    
     $('#photoEditModal').modal('show');
 }
 
-function PhotoSave(event, photoId = null) {
+function PhotoSave() {
+    let photoId = $('#photo_photo_id').val();
     var myFormData = new FormData();
     myFormData.append('file', document.getElementById('photo_file').files[0]);
     myFormData.append('photoId', photoId);
+
+    let tags = [];
+    let i = 0;
+    $('.tag_text').each(function () {
+        tags[i++] = $(this).text();
+    });
+    myFormData.append('tags', tags);
 
     $.ajax({
         url: "/Pages/photoSave.cshtml",
@@ -244,7 +278,7 @@ function PhotoSave(event, photoId = null) {
         success: function (data) {
             if (data == 0) {
                 $("#photoEditModal").modal('hide');
-                if (photoId == null)
+                if (photoId == "")
                     ShowMessage("Фото успешно добавлено");
                 else
                     ShowMessage("Фото успешно обновлено");
@@ -253,11 +287,37 @@ function PhotoSave(event, photoId = null) {
     });
 }
 
-function TagFind(event) {
+function PhotoDelete() {
+    let photoId = $('#photo_photo_id').val();
+    $('#confirm_body').html("Вы действительно хотите удалить это фото?");
+
+    $('#confirm_delete_but').click(function () {
+        $.post("/Pages/photoDelete.cshtml",
+            {
+                photoId: photoId
+            },
+            function (data) {
+                if (data == "") {
+                    ShowMessage("Успешно удалено");
+                    $("#photoEditModal").modal('hide');
+                }
+                else
+                    ShowMessage(data);
+                $('#confirm_delete').modal('hide');
+                // TODO UpdatePhotoList();
+            });
+    })
+    $('#confirm_delete').modal('show');
+}
+
+function TagInput(event) {
     let subString = $('#input_tag').val();
+
+    $('#input_tag').val($('#input_tag').val().match("[0-9A-Za-zА-Яа-яЁё \-]+"));
 
     if (event.key === 'Enter' || event.keyCode === 13) {
         AddTag(subString);
+        $('#input_tag').val("");
         return;
     }
 
@@ -269,7 +329,7 @@ function TagFind(event) {
 }
 
 function TagOnSelect(event) {
-    if ($(event.target).hasClass('tag')) {
+    if ($(event.target).hasClass('tag_to_select')) {
         $('#input_tag').val("");
         $('#tags_dropdown').html("");
 
@@ -278,6 +338,32 @@ function TagOnSelect(event) {
 }
 
 function AddTag(name) {
-    // TODO Add tag to list
-    console.log(name);
+    if ($('.tag_text').length > 10)
+        return;
+    let isContains = false;
+    $('.tag_text').each(function (index) {
+        if ($(this).text() == name)
+            isContains = true;;
+    });
+
+    if (!isContains) {
+        CreateTag(name);
+    }
+}
+
+function CreateTag(name) {
+    let tagWrapper = document.createElement('div');
+    $(tagWrapper).addClass('tag_wrapper');
+    let tagText = document.createElement('div');
+    $(tagText).addClass('tag_text');
+    $(tagText).html(name);
+    $(tagWrapper).append(tagText);
+    let tagDelete = document.createElement('div');
+    $(tagDelete).addClass('tag_delete');
+    $(tagDelete).html('&times');
+    $(tagDelete).click(function () {
+        $(this).parent().remove();
+    });
+    $(tagWrapper).append(tagDelete);
+    $('#photo_tag_row').append(tagWrapper);
 }
