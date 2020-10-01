@@ -575,5 +575,30 @@ namespace Album.DAL.MSSQL
                 int.TryParse(sqlData.ToString(), out count);
             return count > 0;
         }
+
+        public Photo GetPhotoById(Guid photoId)
+        {
+            Photo photo = null;
+
+            string stProc = "Album_GetPhotoById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", photoId),
+            };
+            var sqlData = ExecuteReader(stProc, param);
+
+            foreach (var item in sqlData)
+            {
+                photo = new Photo
+                {
+                    Id = (Guid)item["Id"],
+                    FileName = item["FileName"].ToString(),
+                    UserId = (Guid)item["UserId"],
+                    Date = (DateTime)item["Date"]
+                };
+            }
+
+            return photo;
+        }
     }
 }

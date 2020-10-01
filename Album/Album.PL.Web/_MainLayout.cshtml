@@ -7,7 +7,15 @@
     {
         superuser = 1;
     }
-    string name = User.Identity.IsAuthenticated ? WebPL.GetUserByLogin(User.Identity.Name).Login : "Гость";
+
+    string name = "Гость";
+    Guid id = Guid.Empty;
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = WebPL.GetUserByLogin(User.Identity.Name);
+        name = user.Login;
+        id = user.Id;
+    }
 }
 
 <!DOCTYPE html>
@@ -25,6 +33,7 @@
 <body>
     <div class="d-flex align-items-baseline" id="user_name_top">
         <div class="text-info float-left">Привет, @name</div>
+        <input type="hidden" id="my_id" value="@id" />
         <input type="hidden" id="superuser" value="@superuser" />
         @if (User.Identity.IsAuthenticated)
         {

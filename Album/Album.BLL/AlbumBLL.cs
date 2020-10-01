@@ -83,7 +83,14 @@ namespace Album.BLL
             return true;
         }
 
-        public bool RemoveUserById(Guid id) => DAL.DeleteUserById(id);
+        public bool RemoveUserById(Guid id)
+        {
+            var photos = DAL.GetPhotosByUserId(id);
+            foreach (var photo in photos)
+                DeletePhotoById(photo.Id);
+
+            return DAL.DeleteUserById(id);
+        }
 
         public IEnumerable<Photo> GetPhotosByUserId(Guid userId) => DAL.GetPhotosByUserId(userId);
 
@@ -122,11 +129,14 @@ namespace Album.BLL
 
         public bool DeletePhotoById(Guid id)
         {
+            bool success = false;
             var tags = DAL.GetTagsByPhotoId(id);
             foreach (var tag in tags)
                 DeleteTagFromPhoto(id, tag.TagName);
 
-            return DAL.DeletePhotoById(id);
+            if (FileDAL.DeleteFile(fileDirectory + '\\' + DAL.GetPhotoById(id).FileName));
+                success = DAL.DeletePhotoById(id);
+            return success;
         }
 
         public bool DeleteCommentById(Guid id) => DAL.DeleteCommentById(id);

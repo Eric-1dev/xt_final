@@ -34,8 +34,12 @@
                 if (user != null)
                 {
                     photos = WebPL.GetPhotosByUserId(user.Id);
+                    placeholder = $"Пользователь {user.Name} пока не разместил ни одной фотографии :( . Заглядывайте сюда почаще, чтобы не пропустить новые кадры!";
                 }
-                placeholder = $"Пользователь {user.Name} пока не разместил ни одной фотографии :( . Заглядывайте сюда почаще, чтобы не пропустить новые кадры!";
+                else
+                {
+                    placeholder = $"Пользователь не существует. Возможно его профиль был удален администратором.";
+                }
             }
             break;
         case "popular":
@@ -46,7 +50,7 @@
             break;
     }
 
-    if (photos.Count() != 0)
+    if (photos != null && photos.Count() != 0)
     {
         int i = 0;
         foreach (var photo in photos)

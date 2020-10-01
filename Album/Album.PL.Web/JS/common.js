@@ -1,28 +1,52 @@
 ﻿const no_avatar = "/Images/no_avatar.png";
 
 $(document).ready(Ready);
+document.curUserId = null;
+document.curViewType = null
 
 function Ready() {
     $('#btnLogin').click(Login);
     $('#btnLogout').click(Logout);
-    $('.btn_user_edit').click(UserEdit);
     $('#modal_file').change(UploadAvatar);
     $('#modal_save').click(UserSave);
     $('#modal_delete').click(UserDelete);
-    $('#btn_my_album').click(function () {
-        ShowPhotos("my");
-    });
-    $('.main_users_row').click(function () {
-        ShowPhotos("user", $(this).attr('id'));
-    });
-    $('#btn_add_photo').click(EditPhoto);
+    UserInfoEvents();
+    UserListEvents();
+    
     $('#photo_file').change(UploadPhoto);
     $('#photo_save').click(PhotoSave);
     $('#photo_delete').click(PhotoDelete);
 
     $('#input_tag').keyup(TagInput);
     $('#tags_dropdown').click(TagOnSelect);
-    AddEventToMainPhoto();
+    MainPhotoEvents();
+}
+
+function UserListEvents() {
+    $('.btn_user_edit').click(UserEdit);
+    $('.main_users_row').click(function () {
+        document.curViewType = "user";
+        document.curUserId = $(this).attr('id');
+        ShowPhotos();
+    });
+}
+
+function MainPhotoEvents() {
+    $('.photo_edit_btn').click(function () {
+        let img = $(this).parents('.photo_wrapper').find('.embed-responsive-item');
+        let id = $(img).attr('id');
+        $('#modal_photo_image').attr('src', $(img).attr('src'));
+        EditPhoto(null, id);
+    });
+}
+
+function UserInfoEvents() {
+    $('.btn_user_edit').click(UserEdit);
+    $('#btn_add_photo').click(EditPhoto);
+    $('#btn_my_album').click(function () {
+        document.curViewType = "my";
+        ShowPhotos();
+    });
 }
 
 function ShowMessage(data) {
@@ -57,7 +81,7 @@ function UserEdit() {
     }
     else {
         type = "myInfo";
-        id = $(this).attr('id');
+        id = $('#my_id').val();
         $('#modal_active').hide();
         $('#modal_delete').hide();
         $('#modal_save').show();
@@ -87,8 +111,7 @@ function UpdateMyInfo() {
         null,
         function (data) {
             $('#main_my_info').html(data);
-            $('.btn_user_edit').click(UserEdit);
-            $('#btn_add_photo').click(EditPhoto);
+            UserInfoEvents();
         });
 }
 
@@ -97,7 +120,7 @@ function UpdateUsersList() {
         null,
         function (data) {
             $('#main_users').html(data);
-            $('.btn_user_edit').click(UserEdit);
+            UserListEvents();
         });
 }
 
@@ -201,12 +224,15 @@ function UserDelete() {
                     ShowMessage(data);
                 $('#confirm_delete').modal('hide');
                 UpdateUsersList();
+                ShowPhotos();
             });
     })
     $('#confirm_delete').modal('show');
 }
 
-function ShowPhotos(type, userId = null) {
+function ShowPhotos() {
+    type = document.curViewType;
+    userId = document.curUserId;
     $.post("/Pages/mainPhotoPartial.cshtml",
         {
             type: type,
@@ -214,17 +240,8 @@ function ShowPhotos(type, userId = null) {
         },
         function (data) {
             $('#main_photo').html(data);
-            AddEventToMainPhoto();
+            MainPhotoEvents();
         });
-}
-
-function AddEventToMainPhoto() {
-    $('.photo_edit_btn').click(function () {
-        let img = $(this).parents('.photo_wrapper').find('.embed-responsive-item');
-        let id = $(img).attr('id');
-        $('#modal_photo_image').attr('src', $(img).attr('src'));
-        EditPhoto(null, id);
-    });
 }
 
 function EditPhoto(event, photoId = null) {
@@ -282,6 +299,7 @@ function PhotoSave() {
                     ShowMessage("Фото успешно добавлено");
                 else
                     ShowMessage("Фото успешно обновлено");
+                ShowPhotos();
             }
         }
     });
@@ -304,7 +322,7 @@ function PhotoDelete() {
                 else
                     ShowMessage(data);
                 $('#confirm_delete').modal('hide');
-                // TODO UpdatePhotoList();
+                ShowPhotos();
             });
     })
     $('#confirm_delete').modal('show');
@@ -316,7 +334,7 @@ function TagInput(event) {
     $('#input_tag').val($('#input_tag').val().match("[0-9A-Za-zА-Яа-яЁё \-]+"));
 
     if (event.key === 'Enter' || event.keyCode === 13) {
-        AddTag(subString);
+        AddTag(subString.trim());
         $('#input_tag').val("");
         return;
     }
