@@ -33,11 +33,11 @@ namespace Album.BLL.Interfaces
         bool IsUserActive(string login);
         UserCheckStatus UserCorrectionCheck(User user);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
-        IEnumerable<Photo> GetMostPopularPhotos();
+        IEnumerable<Photo> GetMostRegardsCountPhotos();
         Guid SaveFile(Stream file, string extension, Guid userId);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
-        int GetAvgRatingByPhotoId(Guid photoId);
+        float GetAvgRatingByPhotoId(Guid photoId);
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);

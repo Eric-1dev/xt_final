@@ -73,11 +73,11 @@
                 }
             }
             break;
-        case "popular":
-            photos = WebPL.GetMostPopularPhotos();
+        case "reg_count":
+            photos = WebPL.GetMostRegardsCountPhotos();
             break;
         default:
-            photos = WebPL.GetMostPopularPhotos();
+            photos = WebPL.GetMostRegardsCountPhotos();
             break;
     }
 
@@ -89,7 +89,7 @@
             i++;
             var tags = WebPL.GetTagsByPhotoId(photo.Id);
             var comments = WebPL.GetCommentsByPhotoId(photo.Id);
-            int avgRating = WebPL.GetAvgRatingByPhotoId(photo.Id);
+            string avgRating = WebPL.GetAvgRatingByPhotoId(photo.Id).ToString("0.##"); ;
             int myRating = WebPL.GetRatingByPhotoIdUserLogin(photo.Id, User.Identity.Name);
             <text>
                 <!-- Grid column -->
@@ -129,7 +129,7 @@
                                                     </div>
                                                 }
                                             </div>
-                                            <h4 class="text-muted avg_rating_modal">Средний рейтинг: @avgRating</h4>
+                                            <h4 class="text-muted avg_rating_modal">Средний рейтинг: <span class="text-info">@avgRating</span></h4>
                                             <div class="photo_viewer_taglist">
                                                 <div><small>Теги:</small></div>
                                                 @foreach (var tag in tags)

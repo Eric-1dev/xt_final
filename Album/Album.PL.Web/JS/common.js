@@ -422,8 +422,10 @@ function FindPhotoByTags() {
     });
     if (tags.length != 0)
         document.curViewType = 'tag';
-    else
-        document.curViewType = 'popular';
+    else {
+        $('#tab_1').tab('show');
+        document.curViewType = 'reg_count';
+    }
     ShowPhotos(tags);
 }
 
@@ -488,6 +490,8 @@ function SetRating() {
                 ratingElem.parents('.photo_viewer_modal').find('.my_rating_modal').removeClass('cur_rating');
                 ratingElem.addClass('cur_rating');
                 ShowMessage("Голос учтён");
+                $('.modal').modal('hide');
+                ShowPhotos();
             }
             else {
                 ShowMessage(data);

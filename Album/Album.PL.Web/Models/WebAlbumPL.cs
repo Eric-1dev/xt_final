@@ -50,7 +50,7 @@ namespace Album.PL.Web.Models
 
         public bool DeleteCommentById(Guid id) => BLL.DeleteCommentById(id);
 
-        public IEnumerable<Photo> GetMostPopularPhotos() => BLL.GetMostPopularPhotos();
+        public IEnumerable<Photo> GetMostRegardsCountPhotos() => BLL.GetMostRegardsCountPhotos();
 
         public Guid SavePhoto(Stream file, string origName, Guid userId) => BLL.SaveFile(file, origName, userId);
 
@@ -58,7 +58,7 @@ namespace Album.PL.Web.Models
 
         public IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId) => BLL.GetCommentsByPhotoId(photoId);
 
-        public int GetAvgRatingByPhotoId(Guid photoId) => BLL.GetAvgRatingByPhotoId(photoId);
+        public float GetAvgRatingByPhotoId(Guid photoId) => BLL.GetAvgRatingByPhotoId(photoId);
 
         public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin) => BLL.GetRatingByPhotoIdUserLogin(photoId, userLogin);
 
@@ -74,15 +74,6 @@ namespace Album.PL.Web.Models
             var listOne = new List<Photo>(one);
             var listTwo = new List<Photo>(two);
 
-            /*foreach (var item in one)
-                if (two.Where(photo => photo.Id == item.Id) != null)
-                {
-                    result.AddLast(item);
-                    alreadyAdded.AddLast(item);
-                }
-            foreach (var item in two)
-                if (one.Where(photo => photo.Id == item.Id) != null && alreadyAdded.Where(photo => photo.Id == item.Id) == null)
-                    result.AddLast(item);*/
             for (int i = 0; i < listOne.Count; i++)
             {
                 for (int j = 0; j < listTwo.Count; j++)

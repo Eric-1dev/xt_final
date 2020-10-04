@@ -32,14 +32,14 @@ namespace Album.DAL.Interfaces
         User GetUserByLogin(string login);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         Photo GetPhotoById(Guid photoId);
-        IEnumerable<Photo> GetMostPopularPhotos();
+        IEnumerable<Photo> GetMostRegardsCountPhotos();
         string[] GetRolesForUser(string login);
         bool IsUserInRole(string login, string roleName);
         bool SetUserPassword(Guid userId, string password);
         bool IsAccountExist(string login, string password);
         bool IsUserActive(string login);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
-        int GetAvgRatingByPhotoId(Guid photoId);
+        float GetAvgRatingByPhotoId(Guid photoId);
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);

@@ -389,9 +389,9 @@ namespace Album.DAL.MSSQL
             return ExecuteNonQuery(stProc, param) > 0;
         }
 
-        public IEnumerable<Photo> GetMostPopularPhotos()
+        public IEnumerable<Photo> GetMostRegardsCountPhotos()
         {
-            string stProc = "Album_MostPopularPhoto";
+            string stProc = "Album_MostRegardsCountPhotos";
             var sqlData = ExecuteReader(stProc);
             var photos = new LinkedList<Photo>();
 
@@ -462,7 +462,7 @@ namespace Album.DAL.MSSQL
             return comments;
         }
 
-        public int GetAvgRatingByPhotoId(Guid photoId)
+        public float GetAvgRatingByPhotoId(Guid photoId)
         {
             string stProc = "Album_GetAvgRatingByPhotoId";
             var param = new KeyValuePair<string, object>[]
@@ -470,9 +470,9 @@ namespace Album.DAL.MSSQL
                 new KeyValuePair<string, object>("@PhotoId", photoId)
             };
             var sqlData = ExecuteScalar(stProc, param);
-            int rating = 0;
+            float rating = 0;
             if (sqlData != null)
-                int.TryParse(sqlData.ToString(), out rating);
+                float.TryParse(sqlData.ToString(), out rating);
             return rating;
         }
 

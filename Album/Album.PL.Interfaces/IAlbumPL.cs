@@ -28,11 +28,11 @@ namespace Album.PL.Interfaces
         bool IsUserActive(string login);
         bool RemoveUserById(Guid id);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
-        IEnumerable<Photo> GetMostPopularPhotos();
+        IEnumerable<Photo> GetMostRegardsCountPhotos();
         Guid SavePhoto(Stream file, string origName, Guid userId);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
-        int GetAvgRatingByPhotoId(Guid photoId);
+        float GetAvgRatingByPhotoId(Guid photoId);
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);

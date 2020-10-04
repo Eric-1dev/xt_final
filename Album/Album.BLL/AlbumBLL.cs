@@ -175,7 +175,7 @@ namespace Album.BLL
             return false;
         }
 
-        public IEnumerable<Photo> GetMostPopularPhotos() => DAL.GetMostPopularPhotos();
+        public IEnumerable<Photo> GetMostRegardsCountPhotos() => DAL.GetMostRegardsCountPhotos();
 
         public Guid SaveFile(Stream file, string extension, Guid userId)
         {
@@ -195,7 +195,7 @@ namespace Album.BLL
 
         public IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId) => DAL.GetCommentsByPhotoId(photoId);
 
-        public int GetAvgRatingByPhotoId(Guid photoId) => DAL.GetAvgRatingByPhotoId(photoId);
+        public float GetAvgRatingByPhotoId(Guid photoId) => DAL.GetAvgRatingByPhotoId(photoId);
 
         public int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin) => DAL.GetRatingByPhotoIdUserLogin(photoId, userLogin);
 
