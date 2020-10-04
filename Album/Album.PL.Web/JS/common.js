@@ -1,8 +1,9 @@
 ﻿const no_avatar = "/Images/no_avatar.png";
 
 $(document).ready(Ready);
+document.curViewType = null;
 document.curUserId = null;
-document.curViewType = null
+
 
 function Ready() {
     $('#btnLogin').click(Login);
@@ -18,7 +19,12 @@ function Ready() {
     $('#photo_delete').click(PhotoDelete);
 
     $('#input_tag').keyup(TagInput);
-    $('#tags_dropdown').click(TagOnSelect);
+    $('.tags_dropdown').click(TagOnSelect);
+    $('#findText').keyup(function () {
+        let text = $(this).val();
+        let dest = $('#main_tags_dropdown');
+        GetTagsList(text, dest);
+    });
     MainPhotoEvents();
 }
 
@@ -38,6 +44,9 @@ function MainPhotoEvents() {
         $('#modal_photo_image').attr('src', $(img).attr('src'));
         EditPhoto(null, id);
     });
+    $('.btn_add_comment').click(AddComment);
+    $('.btn_del_comment').click(DelComment);
+    $('.my_rating_modal').click(SetRating);
 }
 
 function UserInfoEvents() {
@@ -230,28 +239,34 @@ function UserDelete() {
     $('#confirm_delete').modal('show');
 }
 
-function ShowPhotos() {
-    type = document.curViewType;
-    userId = document.curUserId;
+function ShowPhotos(tags = null) {
+    let type = document.curViewType;
+    let userId = document.curUserId;
     $.post("/Pages/mainPhotoPartial.cshtml",
         {
             type: type,
-            userId: userId
+            userId: userId,
+            tags: tags
         },
         function (data) {
-            $('#main_photo').html(data);
-            MainPhotoEvents();
+            $('#main_photo').fadeOut('fast', function () {
+                $('#main_photo').html(data);
+                $('#main_photo').fadeIn('fast');
+                MainPhotoEvents();
+            });
         });
 }
 
 function EditPhoto(event, photoId = null) {
+    $('#input_tag').val('');
+    $('.photo_row').find('.tag_wrapper').remove();
+    $('#photo_tags_dropdown').html('');
+
     if (photoId == null) { // Новая фотка
         $('#photo_delete').hide();
         $('#btn_modal_add_photo').show();
         $('#modal_photo_image').removeAttr('src');
         $('#btn_modal_add_photo').html('Добавить фото');
-        $('#photo_tag_row').find('.tag_wrapper').remove();
-        $('#input_tag').val('');
         $('#photo_photo_id').val('');
     }
     else { // Редактирование существующей фотки
@@ -261,8 +276,7 @@ function EditPhoto(event, photoId = null) {
         $.post("/Pages/getTagsByPhotoId.cshtml",
             { photoId: photoId },
             function (data) {
-                $('#photo_tag_row').find('.tag_wrapper').remove();
-                $('#photo_tag_row').append(data);
+                $('.photo_row').find('.tag_row').append(data);
                 $('.tag_delete').click(function () {
                     $(this).parent().remove();
                 });
@@ -280,7 +294,7 @@ function PhotoSave() {
 
     let tags = [];
     let i = 0;
-    $('.tag_text').each(function () {
+    $('#photo_tag_row').find('.tag_text').each(function () {
         tags[i++] = $(this).text();
     });
     myFormData.append('tags', tags);
@@ -299,6 +313,7 @@ function PhotoSave() {
                     ShowMessage("Фото успешно добавлено");
                 else
                     ShowMessage("Фото успешно обновлено");
+                $('#photo_tag_row').find('.tag_wrapper').remove();
                 ShowPhotos();
             }
         }
@@ -333,43 +348,50 @@ function TagInput(event) {
 
     $('#input_tag').val($('#input_tag').val().match("[0-9A-Za-zА-Яа-яЁё \-]+"));
 
-    if (event.key === 'Enter' || event.keyCode === 13) {
-        AddTag(subString.trim());
+    if ((event.key === 'Enter' || event.keyCode === 13) && $(this).val() != "") {
+        AddTag(subString.trim(), $(this));
         $('#input_tag').val("");
         return;
     }
 
+    GetTagsList(subString, $('#photo_tags_dropdown'));
+}
+
+function GetTagsList(subString, destination) {
     $.post("/Pages/getTags.cshtml",
         { SubString: subString },
         function (data) {
-            $('#tags_dropdown').html(data);
+            destination.html(data);
         });
 }
 
 function TagOnSelect(event) {
     if ($(event.target).hasClass('tag_to_select')) {
-        $('#input_tag').val("");
-        $('#tags_dropdown').html("");
+        $(this).prev().val("");
+        $(this).html("");
 
-        AddTag($(event.target).html(), $(event.target).id);
+        AddTag($(event.target).html(), $(this));
     }
 }
 
-function AddTag(name) {
-    if ($('.tag_text').length > 10)
+function AddTag(name, source) {
+    let limit = 10;
+    if (source.parents('#main_find').length > 0)
+        limit = 3;
+    if ($('.tag_text').length > limit - 1)
         return;
     let isContains = false;
-    $('.tag_text').each(function (index) {
+    $('.tag_text').each(function () {
         if ($(this).text() == name)
-            isContains = true;;
+            isContains = true;
     });
 
     if (!isContains) {
-        CreateTag(name);
+        CreateTag(name, source);
     }
 }
 
-function CreateTag(name) {
+function CreateTag(name, destination) {
     let tagWrapper = document.createElement('div');
     $(tagWrapper).addClass('tag_wrapper');
     let tagText = document.createElement('div');
@@ -381,7 +403,94 @@ function CreateTag(name) {
     $(tagDelete).html('&times');
     $(tagDelete).click(function () {
         $(this).parent().remove();
+        if (destination.parents('#main_find').length > 0) {
+            FindPhotoByTags();
+        }
     });
     $(tagWrapper).append(tagDelete);
-    $('#photo_tag_row').append(tagWrapper);
+    destination.parents('.tag_row').append(tagWrapper);
+    if (destination.parents('#main_find').length > 0) {
+        FindPhotoByTags();
+    }
+}
+
+function FindPhotoByTags() {
+    let tags = [];
+    let i = 0;
+    $('#main_find').find('.tag_text').each(function () {
+        tags[i++] = $(this).text();
+    });
+    if (tags.length != 0)
+        document.curViewType = 'tag';
+    else
+        document.curViewType = 'popular';
+    ShowPhotos(tags);
+}
+
+function AddComment() {
+    let textElem = $(this).parents('.add_comment_wrapper').find('.add_comment_text');
+    let photoId = $(this).parents('.photo_viewer_modal').find('.photo_modal_id').val();
+    if (textElem.val().length != 0) {
+        $.post("/Pages/addComment.cshtml",
+            {
+                text: textElem.val(),
+                photoId: photoId
+            },
+            function (data) {
+                if (data == "") {
+                    $('.modal').modal('hide');
+                    textElem.val('');
+                    ShowPhotos();
+                }
+                else {
+                    ShowMessage(data);
+                }
+            });
+        
+    }
+}
+
+function DelComment() {
+    let commentElem = $(this).parents('.photo_comment');
+    let id = $(this).siblings('.comment_id').val();
+
+    $('#confirm_body').html("Удалить комментарий?");
+
+    $('#confirm_delete_but').click(function () {
+        $.post("/Pages/delComment.cshtml",
+            {
+                Id: id
+            },
+            function (data) {
+                if (data == "") {
+                    commentElem.remove();
+                }
+                else
+                    ShowMessage(data);
+                $('#confirm_delete').modal('hide');
+            });
+    })
+    $('#confirm_delete').modal('show');
+}
+
+function SetRating() {
+    let ratingElem = $(this);
+    let rating = ratingElem.html();
+    let photoId = ratingElem.parents('.photo_viewer_modal').find('.photo_modal_id').val();
+
+    $.post("/Pages/setRating.cshtml",
+        {
+            rating: rating,
+            photoId: photoId
+        },
+        function (data) {
+            if (data == "") {
+                ratingElem.parents('.photo_viewer_modal').find('.my_rating_modal').removeClass('cur_rating');
+                ratingElem.addClass('cur_rating');
+                ShowMessage("Голос учтён");
+            }
+            else {
+                ShowMessage(data);
+            }
+        });
 }

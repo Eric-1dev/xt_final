@@ -452,6 +452,7 @@ namespace Album.DAL.MSSQL
                     Id = (Guid)item["Id"],
                     AuthorId = (Guid)item["AuthorId"],
                     PhotoId = (Guid)item["PhotoId"],
+                    Date = (DateTime)item["Date"],
                     Text = item["Text"].ToString()
                 };
 
@@ -599,6 +600,136 @@ namespace Album.DAL.MSSQL
             }
 
             return photo;
+        }
+
+        public IEnumerable<Photo> GetPhotoByTag(string tagName)
+        {
+            string stProc = "Album_GetPhotoByTag";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@TagName", tagName),
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var photos = new LinkedList<Photo>();
+
+            foreach (var item in sqlData)
+            {
+                var photo = new Photo
+                {
+                    Id = (Guid)item["Id"],
+                    FileName = item["FileName"].ToString(),
+                    UserId = (Guid)item["UserId"],
+                    Date = (DateTime)(item["Date"])
+                };
+
+                photos.AddLast(photo);
+            }
+
+            return photos;
+        }
+
+        public Comment GetCommentById(Guid id)
+        {
+            Comment comment = null;
+
+            string stProc = "Album_GetCommentById";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@Id", id),
+            };
+            var sqlData = ExecuteReader(stProc, param);
+
+            foreach (var item in sqlData)
+            {
+                comment = new Comment
+                {
+                    Id = (Guid)item["Id"],
+                    PhotoId = (Guid)item["PhotoId"],
+                    AuthorId = (Guid)item["AuthorId"],
+                    Text = item["Text"].ToString(),
+                    Date = (DateTime)item["Date"]
+                };
+            }
+
+            return comment;
+        }
+
+        public IEnumerable<Regard> GetRegardsByPhotoId(Guid photoId)
+        {
+            string stProc = "Album_GetRegardsByPhotoId";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@PhotoId", photoId)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var regards = new LinkedList<Regard>();
+
+            foreach (var item in sqlData)
+            {
+                var regard = new Regard
+                {
+                    Id = (Guid)item["Id"],
+                    AuthorId = (Guid)item["AuthorId"],
+                    PhotoId = (Guid)item["PhotoId"],
+                    Rating = (int)item["Rating"]
+                };
+
+                regards.AddLast(regard);
+            }
+
+            return regards;
+        }
+
+        public IEnumerable<Regard> GetRegardsByUserId(Guid userId)
+        {
+            string stProc = "Album_GetRegardsByUserId";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@UserId", userId)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var regards = new LinkedList<Regard>();
+
+            foreach (var item in sqlData)
+            {
+                var regard = new Regard
+                {
+                    Id = (Guid)item["Id"],
+                    AuthorId = (Guid)item["AuthorId"],
+                    PhotoId = (Guid)item["PhotoId"],
+                    Rating = (int)item["Rating"]
+                };
+
+                regards.AddLast(regard);
+            }
+
+            return regards;
+        }
+
+        public IEnumerable<Comment> GetCommentsByUserId(Guid userId)
+        {
+            string stProc = "Album_GetCommentsByUserId";
+            var param = new KeyValuePair<string, object>[]
+            {
+                new KeyValuePair<string, object>("@UserId", userId)
+            };
+            var sqlData = ExecuteReader(stProc, param);
+            var comments = new LinkedList<Comment>();
+
+            foreach (var item in sqlData)
+            {
+                var comment = new Comment
+                {
+                    Id = (Guid)item["Id"],
+                    AuthorId = (Guid)item["AuthorId"],
+                    PhotoId = (Guid)item["PhotoId"],
+                    Text = item["TagName"].ToString()
+                };
+
+                comments.AddLast(comment);
+            }
+
+            return comments;
         }
     }
 }

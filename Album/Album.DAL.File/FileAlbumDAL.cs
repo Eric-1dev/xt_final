@@ -10,8 +10,15 @@ namespace Album.DAL.File
 {
     public class FileAlbumDAL : IAlbumDataDAL
     {
+        private void CheckDestinationDir(string path)
+        {
+            var directory = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+        }
         public bool SaveFile(Stream fs, string fullPath)
         {
+            CheckDestinationDir(fullPath);
             using (FileStream outputFileStream = new FileStream(fullPath, FileMode.Create))
             {
                 fs.CopyTo(outputFileStream);

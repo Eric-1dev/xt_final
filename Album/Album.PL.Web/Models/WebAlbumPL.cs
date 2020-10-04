@@ -42,15 +42,13 @@ namespace Album.PL.Web.Models
 
         public bool AddComment(Comment comment) => BLL.AddComment(comment);
 
-        public bool AddRegard(Regard regard) => BLL.AddRegard(regard);
+        public bool SetRegard(Regard regard) => BLL.SetRegard(regard);
 
         public void SetTagsToPhoto(Guid photoId, string[] tagsNames) => BLL.SetTagsToPhoto(photoId, tagsNames);
 
         public bool DeletePhotoById(Guid id) => BLL.DeletePhotoById(id);
 
         public bool DeleteCommentById(Guid id) => BLL.DeleteCommentById(id);
-
-        public bool DeleteRegardById(Guid id) => BLL.DeleteRegardById(id);
 
         public IEnumerable<Photo> GetMostPopularPhotos() => BLL.GetMostPopularPhotos();
 
@@ -67,5 +65,36 @@ namespace Album.PL.Web.Models
         public IEnumerable<Tag> GetTagsStartingAt(string subString) => BLL.GetTagsStartingAt(subString);
 
         public IEnumerable<Tag> GetTagsContainString(string subString) => BLL.GetTagsContainString(subString);
+
+        public IEnumerable<Photo> GetPhotosByTag(string tagName) => BLL.GetPhotoByTag(tagName);
+
+        public IEnumerable<Photo> PhotosIntersect(IEnumerable<Photo> one, IEnumerable<Photo> two)
+        {
+            var result = new LinkedList<Photo>();
+            var listOne = new List<Photo>(one);
+            var listTwo = new List<Photo>(two);
+
+            /*foreach (var item in one)
+                if (two.Where(photo => photo.Id == item.Id) != null)
+                {
+                    result.AddLast(item);
+                    alreadyAdded.AddLast(item);
+                }
+            foreach (var item in two)
+                if (one.Where(photo => photo.Id == item.Id) != null && alreadyAdded.Where(photo => photo.Id == item.Id) == null)
+                    result.AddLast(item);*/
+            for (int i = 0; i < listOne.Count; i++)
+            {
+                for (int j = 0; j < listTwo.Count; j++)
+                {
+                    if (listOne[i].Id == listTwo[j].Id)
+                        result.AddLast(listOne[i]);
+                }
+            }
+
+            return result;
+        }
+
+        public Comment GetCommentById(Guid id) => BLL.GetCommentById(id);
     }
 }

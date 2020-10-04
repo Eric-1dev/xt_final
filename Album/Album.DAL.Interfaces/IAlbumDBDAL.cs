@@ -16,8 +16,12 @@ namespace Album.DAL.Interfaces
         bool InsertTag(Tag tag);
         bool DeleteTagById(Guid id);
         bool InsertRegard(Regard regard);
+        IEnumerable<Regard> GetRegardsByPhotoId(Guid photoId);
+        IEnumerable<Regard> GetRegardsByUserId(Guid userId);
         bool DeleteRegardById(Guid id);
         bool InsertComment(Comment comment);
+        IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
+        IEnumerable<Comment> GetCommentsByUserId(Guid userId);
         bool DeleteCommentById(Guid id);
         bool UpdateUserById(Guid id, User user);
         bool AddTagToPhoto(Guid photoId, Guid tagId);
@@ -35,12 +39,13 @@ namespace Album.DAL.Interfaces
         bool IsAccountExist(string login, string password);
         bool IsUserActive(string login);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
-        IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);
         int GetAvgRatingByPhotoId(Guid photoId);
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);
         Tag GetTagByName(string tagName);
         bool IsTagInUse(Guid tagId);
+        IEnumerable<Photo> GetPhotoByTag(string tagName);
+        Comment GetCommentById(Guid id);
     }
 }

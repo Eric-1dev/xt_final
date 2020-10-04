@@ -10,11 +10,14 @@
         </div>
         <div class="col-7">
             <div class="row" id="main_find">
-                <div class="input-group mb-2">
+                <div class="input-group mb-2 tag_row">
                     <div class="input-group-prepend">
-                        <div class="input-group-text">Find</div>
+                        <div class="input-group-text">Поиск</div>
                     </div>
-                    <input type="text" class="form-control" id="findText" placeholder="Введите тег для поиска фото">
+                    <div class="form-control">
+                        <input type="text" id="findText" maxlength="20" placeholder="Введите тег для поиска фото" autocomplete="off" />
+                        <div class="tags_dropdown" id="main_tags_dropdown"></div>
+                    </div>
                 </div>
             </div>
             <div class="row align-items-center" id="main_photo">

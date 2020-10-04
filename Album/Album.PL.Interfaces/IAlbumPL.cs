@@ -16,8 +16,7 @@ namespace Album.PL.Interfaces
         bool DeletePhotoById(Guid id);
         bool AddComment(Comment comment);
         bool DeleteCommentById(Guid id);
-        bool AddRegard(Regard regard);
-        bool DeleteRegardById(Guid id);
+        bool SetRegard(Regard regard);
         void SetUserPassword(Guid userId, string password);
         User GetUserByLogin(string login);
         User GetUserById(Guid id);
@@ -37,5 +36,7 @@ namespace Album.PL.Interfaces
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);
+        IEnumerable<Photo> GetPhotosByTag(string tagName);
+        Comment GetCommentById(Guid id);
     }
 }

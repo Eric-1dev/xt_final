@@ -11,6 +11,7 @@ namespace Album.Entities
         public Guid Id { get; set; }
         public Guid PhotoId { get; set; }
         public Guid AuthorId { get; set; }
+        public DateTime Date { get; set; }
         public string Text { get; set; }
     }
 }

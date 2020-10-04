@@ -113,29 +113,39 @@ textarea, select, input, button {
 .photo_edit_btn {
     position: absolute;
     top: 0;
-    right: 15px;
+    right: 17px;
     cursor: pointer;
-}
-
-#photo_tag_row {
-    margin-top: 10px;
+    box-shadow: white -2px 2px 5px;
 }
 
 #input_tag_wrapper {
-    width: 10em;
+    width: 15em;
     float: left;
     margin: 2px;
 }
 
-#input_tag_wrapper > * {
-    width: 100%;
+    #input_tag_wrapper > * {
+        width: 100%;
+    }
+
+#photo_tags_dropdown, #main_tags_dropdown {
+    position: absolute;
+    text-align: center;
+    z-index: 999;
 }
 
-#tags_dropdown {
-    position: absolute;
+#photo_tags_dropdown {
     width: inherit;
-    text-align: center;
-    
+}
+
+#findText {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.form-control {
+    min-width: 15em !important;
 }
 
 .tag_to_select {
@@ -144,8 +154,8 @@ textarea, select, input, button {
     user-select: none;
 }
 
-.photo_tag_row {
-    float: left;
+.tag_row {
+    margin-top: 10px;
 }
 
 .tag_wrapper {

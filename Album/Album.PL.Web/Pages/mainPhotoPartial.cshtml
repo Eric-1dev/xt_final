@@ -4,12 +4,12 @@
     var WebPL = new WebAlbumPL();
 
     var type = Request["type"];
-    bool canEdit = false;
+    bool canEditPhoto = false;
     string placeholder = "";
 
     if (User.IsInRole("admin"))
     {
-        canEdit = true;
+        canEditPhoto = true;
     }
 
     IEnumerable<Photo> photos = null;
@@ -18,10 +18,14 @@
     {
         case "my":
             {
-                canEdit = true;
+                canEditPhoto = true;
                 var user = WebPL.GetUserByLogin(User.Identity.Name);
-                photos = WebPL.GetPhotosByUserId(user.Id);
-                placeholder = "У вас пока нет ни одной фотографии :( . Поделитесь новыми снимками!";
+                if (user != null)
+                {
+                    photos = WebPL.GetPhotosByUserId(user.Id);
+                    placeholder = "У вас пока нет ни одной фотографии :( . Поделитесь новыми снимками!";
+                }
+                placeholder = "Вы не вошли в систему.";
             }
             break;
         case "user":
@@ -39,6 +43,33 @@
                 else
                 {
                     placeholder = $"Пользователь не существует. Возможно его профиль был удален администратором.";
+                }
+            }
+            break;
+        case "tag":
+            {
+                string tagsStr = Request["tags[]"];
+                if (tagsStr != null)
+                {
+                    var tags = new List<string>(tagsStr.Split(','));
+                    int i = 0;
+                    foreach (var tag in tags.Where(tag => tag != ""))
+                    {
+                        if (i == 0)
+                        {
+                            photos = WebPL.GetPhotosByTag(tag);
+                        }
+                        else
+                        {
+                            photos = WebPL.PhotosIntersect(photos, WebPL.GetPhotosByTag(tag));
+                        }
+                        i++;
+                    }
+                    if (photos.Count() == 0)
+                    {
+                        placeholder = "Фотографий, удовлетворяющих условиям поиска не найдено.";
+                    }
+
                 }
             }
             break;
@@ -73,12 +104,32 @@
 
                                 <!--Body-->
                                 <div class="modal-body">
+                                    <input type="hidden" class="photo_modal_id" value="@photo.Id" />
                                     <div class="row p-2">
                                         <div class="col-8">
-                                            <h4 class="text-muted text-center">Фото пользователя @WebPL.GetUserById(photo.UserId).Name</h4>
-                                            <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                                <img class="embed-responsive-item" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
+                                            <h4 class="text-muted text-center">Фото пользователя @WebPL.GetUserById(photo.UserId).Name. Добавлено @photo.Date</h4>
+                                            <div class="photo_modal_image_wrapper">
+                                                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+                                                    <img class="embed-responsive-item" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
+                                                </div>
+                                                @if (User.Identity.IsAuthenticated)
+                                                {
+                                                    <div class="text-light rating_modal">
+                                                        <img src="~/Images/dislike.png" />
+                                                        @for (int j = -2; j <= 2; j++)
+                                                        {
+                                                            string curRating = "";
+                                                            if (myRating == j)
+                                                            {
+                                                                curRating = "cur_rating";
+                                                            }
+                                                            <text><h5 class="@curRating default_rating my_rating_modal">@j</h5></text>
+                                                        }
+                                                        <img src="~/Images/like.png" />
+                                                    </div>
+                                                }
                                             </div>
+                                            <h4 class="text-muted avg_rating_modal">Средний рейтинг: @avgRating</h4>
                                             <div class="photo_viewer_taglist">
                                                 <div><small>Теги:</small></div>
                                                 @foreach (var tag in tags)
@@ -94,9 +145,29 @@
                                             <div class="comments_list">
                                                 @foreach (var comment in comments)
                                                 {
+                                                    bool canEditComment = false;
+                                                    string headerClass = "text-info";
+
+                                                    if (User.IsInRole("admin") || WebPL.GetUserById(comment.AuthorId).Login == User.Identity.Name)
+                                                    {
+                                                        canEditComment = true;
+                                                        headerClass = "text-success";
+                                                    }
                                                     <text>
-                                                        <div class="photo_comment">
-                                                            <div class="photo_comment_header">@WebPL.GetUserById(comment.AuthorId).Name</div>
+                                                        <div class="border-top border-bottom border-primary photo_comment">
+                                                            <div class="@headerClass photo_comment_header">
+                                                                <input type="hidden" class="comment_id" value="@comment.Id" />
+                                                                @WebPL.GetUserById(comment.AuthorId).Name
+                                                                @if (canEditComment)
+                                                                {
+                                                                    <text>
+                                                                        <button type="button" class="close btn_del_comment" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </text>
+                                                                }
+                                                            </div>
+                                                            <div class="small">Отправлено: @comment.Date</div>
                                                             <div class="photo_comment_text">@comment.Text</div>
                                                         </div>
                                                     </text>
@@ -129,12 +200,13 @@
                     <!--Modal: Name-->
 
                     <a>
-                        @if (canEdit)
+                        @if (canEditPhoto)
                         {
                             <text>
                                 <div class="photo_edit_btn"><img src="~/Images/edit.png" /></div>
                             </text>
                         }
+                        <div class="text-warning rating_thumb">@avgRating</div>
                         <img class="img-fluid z-depth-1" src="/Images/Photos/@photo.FileName" alt="Фотография"
                              data-toggle="modal" data-target="#main_photo_@i.ToString()">
                     </a>

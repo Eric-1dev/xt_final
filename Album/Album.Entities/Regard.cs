@@ -11,6 +11,6 @@ namespace Album.Entities
         public Guid Id { get; set; }
         public Guid PhotoId { get; set; }
         public Guid AuthorId { get; set; }
-        public byte Rating { get; set; }
+        public int Rating { get; set; }
     }
 }

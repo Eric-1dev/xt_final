@@ -1,0 +1,35 @@
+﻿@using Album.PL.Web.Models
+@using Album.Entities
+@{
+    var WebPL = new WebAlbumPL();
+
+    var user = WebPL.GetUserByLogin(User.Identity.Name);
+    if (user == null)
+    {
+        Response.Write("Войдите в систему, чтобы оценить фотографию");
+        return;
+    }
+
+    Guid photoId;
+    Guid.TryParse(Request["photoId"], out photoId);
+    if (photoId == Guid.Empty)
+    {
+        Response.Write("Фотография не найдена");
+        return;
+    }
+
+    sbyte rating;
+    sbyte.TryParse(Request["rating"], out rating);
+    if (rating < -2 || rating > 2)
+    {
+        Response.Write("Неправильное значение рейтинга");
+        return;
+    }
+
+    var regard = new Regard();
+    regard.AuthorId = user.Id;
+    regard.PhotoId = photoId;
+    regard.Rating = rating;
+
+    WebPL.SetRegard(regard);
+}

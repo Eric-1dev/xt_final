@@ -1,0 +1,39 @@
+﻿@using Album.PL.Web.Models
+@using Album.Entities
+@{
+    var WebPL = new WebAlbumPL();
+
+    Guid commentId;
+    Guid.TryParse(Request["Id"], out commentId);
+    if (commentId == Guid.Empty)
+    {
+        Response.Write("Ты сломал кнопку, мамкин программист!");
+        return;
+    }
+
+    var comment = WebPL.GetCommentById(commentId);
+    if (comment == null)
+    {
+        Response.Write("Комментарий не существует");
+        return;
+    }
+
+    var author = WebPL.GetUserById(comment.AuthorId);
+    if (author == null)
+    {
+        Response.Write("Автор комментария не найден в системе");
+        return;
+    }
+
+    if ( !User.IsInRole("admin") && User.Identity.Name != author.Login)
+    {
+        Response.Write("У вас нет прав на удаление этого комментария");
+        return;
+    }
+
+    if (!WebPL.DeleteCommentById(commentId))
+    {
+        Response.Write("Что-то пошло не так.");
+        return;
+    }
+}

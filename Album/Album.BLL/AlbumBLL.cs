@@ -89,6 +89,14 @@ namespace Album.BLL
             foreach (var photo in photos)
                 DeletePhotoById(photo.Id);
 
+            var comments = DAL.GetCommentsByUserId(id);
+            foreach (var comment in comments)
+                DAL.DeleteCommentById(comment.Id);
+
+            var regards = DAL.GetRegardsByUserId(id);
+            foreach (var regard in regards)
+                DAL.DeleteRegardById(regard.Id);
+
             return DAL.DeleteUserById(id);
         }
 
@@ -96,9 +104,12 @@ namespace Album.BLL
 
         public bool AddPhoto(Photo photo) => DAL.InsertPhoto(photo);
 
-        public bool AddComment(Comment comment) => DAL.InsertComment(comment);
-
-        public bool AddRegard(Regard regard) => DAL.InsertRegard(regard);
+        public bool AddComment(Comment comment)
+        {
+            if (DAL.GetPhotoById(comment.PhotoId) == null)
+                return false;
+            return DAL.InsertComment(comment);
+        }
 
         public bool AddTagToPhoto(Guid photoId, string tagName)
         {
@@ -134,14 +145,35 @@ namespace Album.BLL
             foreach (var tag in tags)
                 DeleteTagFromPhoto(id, tag.TagName);
 
-            if (FileDAL.DeleteFile(fileDirectory + '\\' + DAL.GetPhotoById(id).FileName));
+            var comments = DAL.GetCommentsByPhotoId(id);
+            foreach (var comment in comments)
+                DAL.DeleteCommentById(comment.Id);
+
+            var regards = DAL.GetRegardsByPhotoId(id);
+            foreach (var regard in regards)
+                DAL.DeleteRegardById(regard.Id);
+
+            if (FileDAL.DeleteFile(fileDirectory + '\\' + DAL.GetPhotoById(id).FileName))
                 success = DAL.DeletePhotoById(id);
             return success;
         }
 
         public bool DeleteCommentById(Guid id) => DAL.DeleteCommentById(id);
 
-        public bool DeleteRegardById(Guid id) => DAL.DeleteRegardById(id);
+        public bool SetRegard(Regard regard)
+        {
+            var allPhotoRegards = DAL.GetRegardsByUserId(regard.AuthorId);
+
+            var userRegard = allPhotoRegards.Where(rgrd => rgrd.PhotoId == regard.PhotoId).FirstOrDefault();
+            if (userRegard == null)
+                return DAL.InsertRegard(regard);
+
+            userRegard.Rating = regard.Rating;
+            if (DAL.DeleteRegardById(userRegard.Id))
+                return DAL.InsertRegard(userRegard);
+
+            return false;
+        }
 
         public IEnumerable<Photo> GetMostPopularPhotos() => DAL.GetMostPopularPhotos();
 
@@ -185,5 +217,9 @@ namespace Album.BLL
                 AddTagToPhoto(photoId, tag);
             }
         }
+
+        public IEnumerable<Photo> GetPhotoByTag(string tagName) => DAL.GetPhotoByTag(tagName);
+
+        public Comment GetCommentById(Guid id) => DAL.GetCommentById(id);
     }
 }

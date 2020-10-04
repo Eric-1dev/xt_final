@@ -19,8 +19,7 @@ namespace Album.BLL.Interfaces
         bool DeleteTagFromPhoto(Guid photoId, string tagName);
         bool AddComment(Comment comment);
         bool DeleteCommentById(Guid id);
-        bool AddRegard(Regard regard);
-        bool DeleteRegardById(Guid id);
+        bool SetRegard(Regard regard);
         User GetUserById(Guid id);
         User GetUserByLogin(string login);
         bool AddUserToAdmins(Guid userId);
@@ -42,5 +41,7 @@ namespace Album.BLL.Interfaces
         int GetRatingByPhotoIdUserLogin(Guid photoId, string userLogin);
         IEnumerable<Tag> GetTagsStartingAt(string subString);
         IEnumerable<Tag> GetTagsContainString(string subString);
+        IEnumerable<Photo> GetPhotoByTag(string tagName);
+        Comment GetCommentById(Guid id);
     }
 }

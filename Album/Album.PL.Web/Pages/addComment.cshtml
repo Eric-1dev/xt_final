@@ -1,0 +1,33 @@
+﻿@using Album.PL.Web.Models
+@using Album.Entities
+@{
+    var WebPL = new WebAlbumPL();
+
+    var text = Request["text"].Trim();
+    Guid photoId;
+    Guid.TryParse(Request["photoId"], out photoId);
+    if (photoId == Guid.Empty)
+    {
+        Response.Write("Фотография не найдена.");
+        return;
+    }
+
+    if (text.Length == 0)
+    {
+        Response.Write("Нельзя оставить пустой комментарий.");
+        return;
+    }
+
+    var user = WebPL.GetUserByLogin(User.Identity.Name);
+    if (user == null)
+    {
+        Response.Write("Чтобы оставить комментарии, необходимо зайти в систему");
+        return;
+    }
+
+    var comment = new Comment();
+    comment.AuthorId = user.Id;
+    comment.PhotoId = photoId;
+    comment.Text = text;
+    WebPL.AddComment(comment);
+}
