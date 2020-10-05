@@ -411,6 +411,50 @@ namespace Album.DAL.MSSQL
             return photos;
         }
 
+        public IEnumerable<Photo> GetMostCommentedPhotos()
+        {
+            string stProc = "Album_MostCommentedPhotos";
+            var sqlData = ExecuteReader(stProc);
+            var photos = new LinkedList<Photo>();
+
+            foreach (var item in sqlData)
+            {
+                var photo = new Photo
+                {
+                    Id = (Guid)item["Id"],
+                    FileName = item["FileName"].ToString(),
+                    UserId = (Guid)item["UserId"],
+                    Date = (DateTime)(item["Date"])
+                };
+
+                photos.AddLast(photo);
+            }
+
+            return photos;
+        }
+
+        public IEnumerable<Photo> GetMostRatedPhotos()
+        {
+            string stProc = "Album_MostRatedPhotos";
+            var sqlData = ExecuteReader(stProc);
+            var photos = new LinkedList<Photo>();
+
+            foreach (var item in sqlData)
+            {
+                var photo = new Photo
+                {
+                    Id = (Guid)item["Id"],
+                    FileName = item["FileName"].ToString(),
+                    UserId = (Guid)item["UserId"],
+                    Date = (DateTime)(item["Date"])
+                };
+
+                photos.AddLast(photo);
+            }
+
+            return photos;
+        }
+
         public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId)
         {
             string stProc = "Album_GetTagsByPhotoId";

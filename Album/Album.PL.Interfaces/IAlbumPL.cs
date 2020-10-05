@@ -29,6 +29,8 @@ namespace Album.PL.Interfaces
         bool RemoveUserById(Guid id);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         IEnumerable<Photo> GetMostRegardsCountPhotos();
+        IEnumerable<Photo> GetMostCommentedPhotos();
+        IEnumerable<Photo> GetMostRatedPhotos();
         Guid SavePhoto(Stream file, string origName, Guid userId);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);

@@ -1,4 +1,9 @@
-﻿.comments {
+﻿.photo_viewer_modal {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.comments {
     display: flex;
     align-items: stretch;
     flex-direction: column;

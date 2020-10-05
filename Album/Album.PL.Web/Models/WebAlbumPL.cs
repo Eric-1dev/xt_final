@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace Album.PL.Web.Models
 {
@@ -87,5 +88,9 @@ namespace Album.PL.Web.Models
         }
 
         public Comment GetCommentById(Guid id) => BLL.GetCommentById(id);
+
+        public IEnumerable<Photo> GetMostCommentedPhotos() => BLL.GetMostCommentedPhotos();
+
+        public IEnumerable<Photo> GetMostRatedPhotos() => BLL.GetMostRatedPhotos();
     }
 }

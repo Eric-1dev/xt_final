@@ -33,6 +33,8 @@ namespace Album.DAL.Interfaces
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         Photo GetPhotoById(Guid photoId);
         IEnumerable<Photo> GetMostRegardsCountPhotos();
+        IEnumerable<Photo> GetMostCommentedPhotos();
+        IEnumerable<Photo> GetMostRatedPhotos();
         string[] GetRolesForUser(string login);
         bool IsUserInRole(string login, string roleName);
         bool SetUserPassword(Guid userId, string password);

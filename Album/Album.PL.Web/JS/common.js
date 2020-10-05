@@ -25,6 +25,7 @@ function Ready() {
         let dest = $('#main_tags_dropdown');
         GetTagsList(text, dest);
     });
+    $('.nav-link').click(TabsOnClick);
     MainPhotoEvents();
 }
 
@@ -250,8 +251,8 @@ function ShowPhotos(tags = null) {
         },
         function (data) {
             $('#main_photo').fadeOut('fast', function () {
-                $('#main_photo').html(data);
-                $('#main_photo').fadeIn('fast');
+                $('#main_photo').html(data).promise().done($('#main_photo').fadeIn('fast'));
+                
                 MainPhotoEvents();
             });
         });
@@ -497,4 +498,20 @@ function SetRating() {
                 ShowMessage(data);
             }
         });
+}
+
+function TabsOnClick() {
+    switch ($(this).attr('id')) {
+        case 'tab_1':
+            document.curViewType = 'most_rated';
+            break;
+        case 'tab_2':
+            document.curViewType = 'most_commented';
+            break;
+        case 'tab_3':
+            document.curViewType = 'reg_count';
+            break;
+        default: break;
+    }
+    ShowPhotos();
 }

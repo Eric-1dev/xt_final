@@ -34,6 +34,8 @@ namespace Album.BLL.Interfaces
         UserCheckStatus UserCorrectionCheck(User user);
         IEnumerable<Photo> GetPhotosByUserId(Guid userId);
         IEnumerable<Photo> GetMostRegardsCountPhotos();
+        IEnumerable<Photo> GetMostCommentedPhotos();
+        IEnumerable<Photo> GetMostRatedPhotos();
         Guid SaveFile(Stream file, string extension, Guid userId);
         IEnumerable<Tag> GetTagsByPhotoId(Guid photoId);
         IEnumerable<Comment> GetCommentsByPhotoId(Guid photoId);

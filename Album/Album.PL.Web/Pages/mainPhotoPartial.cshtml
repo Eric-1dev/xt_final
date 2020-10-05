@@ -73,8 +73,14 @@
                 }
             }
             break;
+        case "most_rated":
+            photos = WebPL.GetMostRatedPhotos();
+            break;
         case "reg_count":
             photos = WebPL.GetMostRegardsCountPhotos();
+            break;
+        case "most_commented":
+            photos = WebPL.GetMostCommentedPhotos();
             break;
         default:
             photos = WebPL.GetMostRegardsCountPhotos();

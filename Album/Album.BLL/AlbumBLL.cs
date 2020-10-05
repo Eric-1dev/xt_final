@@ -221,5 +221,9 @@ namespace Album.BLL
         public IEnumerable<Photo> GetPhotoByTag(string tagName) => DAL.GetPhotoByTag(tagName);
 
         public Comment GetCommentById(Guid id) => DAL.GetCommentById(id);
+
+        public IEnumerable<Photo> GetMostCommentedPhotos() => DAL.GetMostCommentedPhotos();
+
+        public IEnumerable<Photo> GetMostRatedPhotos() => DAL.GetMostRatedPhotos();
     }
 }

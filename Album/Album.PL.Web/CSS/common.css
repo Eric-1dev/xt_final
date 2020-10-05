@@ -1,21 +1,44 @@
-﻿body {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0;
-    padding: 10px;
-}
-
-textarea, select, input, button {
+﻿textarea, select, input, button {
     outline: none;
-}
-
-.container-fluid {
-    flex: 1;
 }
 
 .btn {
     margin: 1px;
+}
+
+#user_name_top {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+.header {
+    width: 100%;
+    height: 50px;
+}
+
+.left_side, .section, .right_side {
+    width: 300px;
+    float: left;
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
+}
+
+.section {
+    width: calc(100% - 600px);
+    padding: 0 15px;
+}
+
+.right_side {
+}
+
+@media screen and (max-width: 850px) {
+    .left_side, .section, .right_side {
+        width: 100%;
+    }
+}
+
+.photo_wrapper {
 }
 
 #confirm_delete {
@@ -42,12 +65,6 @@ textarea, select, input, button {
         max-height: 100%;
         max-width: 100%;
     }
-
-#user_name_top {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-}
 
 .main_users_row {
     height: 50px;
@@ -103,11 +120,6 @@ textarea, select, input, button {
 #modal_photo_image {
     max-width: 100%;
     max-height: 100%;
-}
-
-.photo_viewer_modal {
-    max-width: 90%;
-    max-height: 90%;
 }
 
 .photo_edit_btn {
