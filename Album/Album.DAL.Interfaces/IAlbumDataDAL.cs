@@ -11,5 +11,6 @@ namespace Album.DAL.Interfaces
     {
         bool SaveFile(Stream fs, string fullPath);
         bool DeleteFile(string fullPath);
+        bool IsFileExist(string fullPath);
     }
 }

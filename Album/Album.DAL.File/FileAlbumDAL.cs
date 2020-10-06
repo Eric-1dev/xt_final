@@ -19,24 +19,43 @@ namespace Album.DAL.File
         public bool SaveFile(Stream fs, string fullPath)
         {
             CheckDestinationDir(fullPath);
-            using (FileStream outputFileStream = new FileStream(fullPath, FileMode.Create))
+            int i = 0;
+            while (i < 3)
             {
-                fs.CopyTo(outputFileStream);
-                return true;
+                try
+                {
+                    using (FileStream outputFileStream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        fs.CopyTo(outputFileStream);
+                        return true;
+                    }
+                }
+                catch
+                {
+                    i++;
+                }
             }
+            throw new IOException("Cannot save file");
         }
 
         public bool DeleteFile(string fullPath)
         {
-            try
+            int i = 0;
+            while (i < 3)
             {
-                System.IO.File.Delete(fullPath);
-                return true;
+                try
+                {
+                    System.IO.File.Delete(fullPath);
+                    return true;
+                }
+                catch
+                {
+                    i++;
+                }
             }
-            catch (Exception ex)
-            {
-                throw new IOException("Cannot delete file", ex);
-            }
+            throw new IOException("Cannot delete file");
         }
+
+        public bool IsFileExist(string fullPath) => System.IO.File.Exists(fullPath);
     }
 }

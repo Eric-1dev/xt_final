@@ -1,0 +1,15 @@
+﻿@using Album.BLL.DR
+@{
+    var WebPL = AlbumBLLDR.AlbumBLL;
+
+    var user = WebPL.GetUserByLogin(User.Identity.Name);
+
+    string userName = user != null ? user.Name : "Гость";
+}
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Что ж, @userName, ты всё сломал. Что-то пошло не так. Видимо где-то что-то произошло. Скоро что-нибудь где-нибудь поправим и всё заработает.</h1>
+</body>
+</html>

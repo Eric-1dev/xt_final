@@ -40,5 +40,6 @@ namespace Album.PL.Interfaces
         IEnumerable<Tag> GetTagsContainString(string subString);
         IEnumerable<Photo> GetPhotosByTag(string tagName);
         Comment GetCommentById(Guid id);
+        bool IsPhotoExist(string fullPath);
     }
 }

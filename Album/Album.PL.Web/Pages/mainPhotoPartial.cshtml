@@ -96,6 +96,12 @@
         foreach (var photo in photos)
         {
             i++;
+            string src = @"/Images/Photos/" + photo.FileName;
+            if (!WebPL.IsPhotoExist(photo.FileName))
+            {
+                Logger.Log.Error(photo.FileName + " Does not exist");
+                src = @"/Images/no_photo.png";
+            }
             var tags = WebPL.GetTagsByPhotoId(photo.Id);
             var comments = WebPL.GetCommentsByPhotoId(photo.Id);
             string avgRating = WebPL.GetAvgRatingByPhotoId(photo.Id).ToString("0.##"); ;
@@ -119,7 +125,7 @@
                                             <h4 class="text-muted text-center">Фото пользователя @WebPL.GetUserById(photo.UserId).Name. Добавлено @photo.Date</h4>
                                             <div class="photo_modal_image_wrapper">
                                                 <div class="d-flex align-items-center">
-                                                    <img class="photo_view_image" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
+                                                    <img class="photo_view_image" id="@photo.Id" src="@src" />
                                                 </div>
                                                 @if (User.Identity.IsAuthenticated)
                                                 {
@@ -209,7 +215,7 @@
                     <!--Modal: Name-->
 
                     <a>
-                        <img class="img-fluid z-depth-4 photo_thumb" src="/Images/Photos/@photo.FileName" alt="Фотография"
+                        <img class="img-fluid z-depth-4 photo_thumb" src="@src" alt="Фотография"
                              data-toggle="modal" data-target="#main_photo_@i.ToString()">
                         @if (canEditPhoto)
                         {

@@ -53,7 +53,7 @@ namespace Album.PL.Web.Models
 
         public IEnumerable<Photo> GetMostRegardsCountPhotos() => BLL.GetMostRegardsCountPhotos();
 
-        public Guid SavePhoto(Stream file, string origName, Guid userId) => BLL.SaveFile(file, origName, userId);
+        public Guid SavePhoto(Stream file, string extension, Guid userId) => BLL.SaveFile(file, extension, userId);
 
         public IEnumerable<Tag> GetTagsByPhotoId(Guid photoId) => BLL.GetTagsByPhotoId(photoId);
 
@@ -92,5 +92,7 @@ namespace Album.PL.Web.Models
         public IEnumerable<Photo> GetMostCommentedPhotos() => BLL.GetMostCommentedPhotos();
 
         public IEnumerable<Photo> GetMostRatedPhotos() => BLL.GetMostRatedPhotos();
+
+        public bool IsPhotoExist(string fileName) => BLL.IsPhotoExist(fileName);
     }
 }

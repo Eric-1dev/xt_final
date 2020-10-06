@@ -44,6 +44,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.11\lib\net45\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=3.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.3.6.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -98,8 +101,12 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="CSS\photoViewer.css" />
     <Content Include="CSS\common.css" />
-    <Content Include="ErrorPage.html" />
+    <None Include="ErrorPage.cshtml" />
     <Content Include="CSS\login.css" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\dislike.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\like.png" />
     <Content Include="Images\no_avatar.png" />
     <Content Include="Images\plus.png" />
     <Content Include="JS\common.js" />
@@ -239,7 +246,11 @@
     <Content Include="_MainLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\DefaultRP.cs" />
+    <Compile Include="Models\Logger.cs" />
     <Compile Include="Models\WebAlbumPL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -262,6 +273,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Photos\" />
+    <Folder Include="Logs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Album.BLL.DR\Album.BLL.DR.csproj">

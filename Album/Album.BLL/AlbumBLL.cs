@@ -17,7 +17,7 @@ namespace Album.BLL
         private readonly IAlbumDBDAL DAL = AlbumDALDR.AlbumDAL;
         private readonly IAlbumDataDAL FileDAL = AlbumDALDR.AlbumFileDAL;
 
-        private readonly string fileDirectory = @"D:\EPAM\xt_final\Album\Album.PL.Web\Images\Photos";
+        private readonly string _fileDirectory = @"D:\EPAM\xt_final\Album\Album.PL.Web\Images\Photos";
 
         public UserCheckStatus AddUser(User user)
         {
@@ -153,7 +153,7 @@ namespace Album.BLL
             foreach (var regard in regards)
                 DAL.DeleteRegardById(regard.Id);
 
-            if (FileDAL.DeleteFile(fileDirectory + '\\' + DAL.GetPhotoById(id).FileName))
+            if (FileDAL.DeleteFile(_fileDirectory + '\\' + DAL.GetPhotoById(id).FileName))
                 success = DAL.DeletePhotoById(id);
             return success;
         }
@@ -185,7 +185,7 @@ namespace Album.BLL
                 UserId = userId
             };
             photo.FileName = photo.Id.ToString() + extension;
-            if (FileDAL.SaveFile(file, fileDirectory + '\\' + photo.FileName))
+            if (FileDAL.SaveFile(file, _fileDirectory + '\\' + photo.FileName))
                 DAL.InsertPhoto(photo);
 
             return photo.Id;
@@ -225,5 +225,7 @@ namespace Album.BLL
         public IEnumerable<Photo> GetMostCommentedPhotos() => DAL.GetMostCommentedPhotos();
 
         public IEnumerable<Photo> GetMostRatedPhotos() => DAL.GetMostRatedPhotos();
+
+        public bool IsPhotoExist(string fileName) => FileDAL.IsFileExist(_fileDirectory + '\\' + fileName);
     }
 }

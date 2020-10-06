@@ -45,5 +45,6 @@ namespace Album.BLL.Interfaces
         IEnumerable<Tag> GetTagsContainString(string subString);
         IEnumerable<Photo> GetPhotoByTag(string tagName);
         Comment GetCommentById(Guid id);
+        bool IsPhotoExist(string fileName);
     }
 }
