@@ -25,7 +25,10 @@
                     photos = WebPL.GetPhotosByUserId(user.Id);
                     placeholder = "У вас пока нет ни одной фотографии :( . Поделитесь новыми снимками!";
                 }
-                placeholder = "Вы не вошли в систему.";
+                else
+                {
+                    placeholder = "Вы не вошли в систему.";
+                }
             }
             break;
         case "user":
@@ -115,8 +118,8 @@
                                         <div class="col-8">
                                             <h4 class="text-muted text-center">Фото пользователя @WebPL.GetUserById(photo.UserId).Name. Добавлено @photo.Date</h4>
                                             <div class="photo_modal_image_wrapper">
-                                                <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                                                    <img class="embed-responsive-item" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
+                                                <div class="d-flex align-items-center">
+                                                    <img class="photo_view_image" id="@photo.Id" src="/Images/Photos/@photo.FileName" />
                                                 </div>
                                                 @if (User.Identity.IsAuthenticated)
                                                 {
@@ -206,6 +209,8 @@
                     <!--Modal: Name-->
 
                     <a>
+                        <img class="img-fluid z-depth-4 photo_thumb" src="/Images/Photos/@photo.FileName" alt="Фотография"
+                             data-toggle="modal" data-target="#main_photo_@i.ToString()">
                         @if (canEditPhoto)
                         {
                             <text>
@@ -213,8 +218,6 @@
                             </text>
                         }
                         <div class="text-warning rating_thumb">@avgRating</div>
-                        <img class="img-fluid z-depth-1" src="/Images/Photos/@photo.FileName" alt="Фотография"
-                             data-toggle="modal" data-target="#main_photo_@i.ToString()">
                     </a>
 
                 </div>

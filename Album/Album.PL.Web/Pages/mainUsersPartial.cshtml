@@ -12,7 +12,7 @@
         var avatar = user.Avatar != null ? user.Avatar : "/Images/no_avatar.png";
         <text>
             <div class="m-0 d-flex align-items-center main_users_row" id="@user.Id">
-                <div><img src="@avatar" /></div>
+                <div class="right_avatar_wrapper"><img src="@avatar" /></div>
                 <div class="text-dark users_list_name">@user.Name</div>
                 @if (User.IsInRole("user"))
                 {

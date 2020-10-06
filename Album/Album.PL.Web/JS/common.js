@@ -40,7 +40,7 @@ function UserListEvents() {
 
 function MainPhotoEvents() {
     $('.photo_edit_btn').click(function () {
-        let img = $(this).parents('.photo_wrapper').find('.embed-responsive-item');
+        let img = $(this).parents('.photo_wrapper').find('.photo_view_image');
         let id = $(img).attr('id');
         $('#modal_photo_image').attr('src', $(img).attr('src'));
         EditPhoto(null, id);

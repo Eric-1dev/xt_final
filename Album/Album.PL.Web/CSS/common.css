@@ -38,9 +38,6 @@
     }
 }
 
-.photo_wrapper {
-}
-
 #confirm_delete {
     z-index: 9999;
 }
@@ -91,9 +88,19 @@
     overflow: hidden;
 }
 
-.modal_row {
-    align-items: center;
+.right_avatar_wrapper {
+    width: 50px;
+    text-align: center;
 }
+
+    .right_avatar_wrapper > img {
+        max-width: 50px;
+        max-height: 50px;
+    }
+
+    .modal_row {
+        align-items: center;
+    }
 
 #modal_div_image {
     display: flex;
@@ -128,6 +135,12 @@
     right: 17px;
     cursor: pointer;
     box-shadow: white -2px 2px 5px;
+}
+
+.photo_thumb {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto !important;
 }
 
 #input_tag_wrapper {
